@@ -1,6 +1,6 @@
 # SellHive — Project Skeleton
 
-React (frontend) + Laravel (backend/API) + MySQL — decoupled architecture.
+React (frontend) + Laravel (backend/API) 
 
 ## Structure
 ```
