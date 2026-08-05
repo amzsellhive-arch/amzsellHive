@@ -1,33 +1,58 @@
-import { Link } from 'react-router-dom'
+import { CalendarCheck, Search, Settings, Zap } from 'lucide-react';
 
 export default function HowItWorks() {
   const steps = [
-    { t: 'Book a Strategy Session', d: "A free call. We talk about your account, your numbers, and whether we're a fit. No pitch deck." },
-    { t: 'Audit & Gameplan', d: 'We read your campaigns and hand you a written plan with real dollar figures attached.' },
-    { t: 'Onboarding & Setup', d: 'Read-only access, structure reset, and quick wins land inside the first month.' },
-    { t: 'Delivery & Optimization', d: 'We manage, report in GP and NP, and keep optimizing every week. Month to month, no lock-in.' },
-  ]
+    {
+      icon: CalendarCheck,
+      title: 'Book Strategy Session',
+      description: 'A short call to understand your account, your goals, and whether we can actually help.',
+    },
+    {
+      icon: Search,
+      title: 'Audit & Gameplan',
+      description: 'A real teardown of your advertising with dollar figures attached. Yours to keep either way.',
+    },
+    {
+      icon: Settings,
+      title: 'Onboarding & Setup',
+      description: 'Campaign restructuring, negative targeting, and the first round of optimizations — usually in week one.',
+    },
+    {
+      icon: Zap,
+      title: 'Delivery & Optimization',
+      description: 'Ongoing management reported in profit, not vanity. Weekly check-ins, monthly strategy calls.',
+    },
+  ];
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head centered">
-          <span className="kicker">How it works</span>
-          <h2>Four steps. No guesswork.</h2>
-          <p>You'll know exactly what happens after you click — because the free call is step one of a system, not a sales trap.</p>
+    <section className="py-20 bg-white border-y border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">How It Works</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3 mb-4 tracking-tight">
+            Four steps to profitable growth
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            A clear process so you know exactly what happens after clicking. No mystery, no sales trap.
+          </p>
         </div>
-        <div className="steps">
-          {steps.map((s, i) => (
-            <div className="step" key={i}>
-              <h3>{s.t}</h3>
-              <p>{s.d}</p>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((step, i) => (
+            <div key={i} className="relative bg-[hsl(30,20%,97%)] rounded-2xl p-7 card-hover">
+              {/* Step number */}
+              <div className="absolute -top-4 left-7 w-8 h-8 bg-[hsl(16,80%,52%)] text-white rounded-full flex items-center justify-center text-sm font-bold shadow-md">
+                {i + 1}
+              </div>
+              <div className="mt-3">
+                <step.icon size={28} className="text-[hsl(260,60%,55%)] mb-4" />
+                <h3 className="text-lg font-bold mb-2">{step.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+              </div>
             </div>
           ))}
         </div>
-        <div className="center" style={{ textAlign: 'center', marginTop: 48 }}>
-          <Link to="/audit" className="btn btn-primary btn-xl">Book a Free Strategy Call</Link>
-        </div>
       </div>
     </section>
-  )
+  );
 }

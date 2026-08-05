@@ -1,59 +1,57 @@
-import { useState } from 'react'
-
-const groups = [
-  {
-    title: 'Strategy & process',
-    items: [
-      { q: 'Can I skip the strategy call?', a: "You can — but the call is where we gather the numbers that make the audit useful. It's free, it's short, and it's the first step of the system, not a sales pitch." },
-      { q: 'We already have an agency. Is this worth it?', a: "Treat the free audit as a second opinion. If they're doing well, you'll get confirmation. If spend is leaking, you'll see exactly where — and you keep the report either way." },
-    ],
-  },
-  {
-    title: 'Pricing & logistics',
-    items: [
-      { q: 'How much does it cost?', a: "We work project or retainer, month to month. We'll show you the math on your own account first — and only if the numbers justify it do we talk about fees." },
-      { q: 'Is there a contract?', a: 'No lock-in, ever. We keep clients by performance, not by contract length.' },
-    ],
-  },
-  {
-    title: 'Results',
-    items: [
-      { q: 'What if I already tried other agencies?', a: "That's exactly who we're built for. If agencies only sold you revenue while margin went backwards, we run the opposite way — everything tied to gross and net profit, with screenshots you can verify." },
-      { q: 'Do you guarantee results?', a: "We separate verified results from targets, and we're honest about what your niche can win. If it can't win, we'll tell you and walk away." },
-    ],
-  },
-]
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 export default function FAQ() {
-  const [open, setOpen] = useState(0)
+  const [faqs, setFaqs] = useState([
+    { id: 1, question: 'Is the audit really free?', answer: 'Yes. You keep the audit whether or not we work together. It\'s a real teardown with dollar figures — not a sales call in disguise.', category: 'general' },
+    { id: 2, question: 'How much does management cost?', answer: 'We don\'t quote before seeing your account. The audit shows what\'s recoverable, then the fee is set against that. Three structures: flat, performance, or hybrid.', category: 'pricing' },
+    { id: 3, question: 'What if I already have an agency?', answer: 'Treat this as a free second opinion. If they\'re doing well you\'ll get confirmation; if spend is leaking you\'ll see exactly where.', category: 'general' },
+    { id: 4, question: 'Is there a contract?', answer: 'No. Month to month. We keep clients by performance, not lock-in.', category: 'pricing' },
+    { id: 5, question: 'How fast can we start?', answer: 'Audit within 48 hours, onboarding in week one, quick wins inside the first month.', category: 'process' },
+    { id: 6, question: 'Who works on my account?', answer: 'Ishfaq — the founder. SellHive is deliberately small. Limited accounts, maximum attention.', category: 'process' },
+  ]);
+  const [openId, setOpenId] = useState(null);
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="section-head centered">
-          <span className="kicker">Questions</span>
-          <h2>Everything sellers ask before booking</h2>
+    <section className="py-20 bg-white border-t border-border">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">FAQ</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-3 mb-4 tracking-tight">
+            Straight answers
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            The real objections we hear — answered honestly.
+          </p>
         </div>
 
-        {groups.map((g, gi) => (
-          <div key={gi} style={{ marginBottom: 28 }}>
-            <h3 style={{ marginBottom: 12 }}>{g.title}</h3>
-            {g.items.map((it, ii) => {
-              const idx = gi * 10 + ii
-              const isOpen = open === idx
-              return (
-                <div className={`faq-item ${isOpen ? 'open' : ''}`} key={ii}>
-                  <button className="faq-q" onClick={() => setOpen(isOpen ? -1 : idx)}>
-                    {it.q}
-                    <span className="chev">▾</span>
-                  </button>
-                  {isOpen && <div className="faq-a">{it.a}</div>}
+        <div className="space-y-3">
+          {faqs.map((faq) => (
+            <div
+              key={faq.id}
+              className="bg-[hsl(30,20%,97%)] rounded-xl border border-border overflow-hidden transition-all"
+            >
+              <button
+                onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
+                className="w-full flex items-center justify-between px-6 py-5 text-left"
+              >
+                <span className="font-semibold text-sm pr-4">{faq.question}</span>
+                <ChevronDown
+                  size={18}
+                  className={`text-muted-foreground flex-shrink-0 transition-transform duration-200 ${
+                    openId === faq.id ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              {openId === faq.id && (
+                <div className="px-6 pb-5 text-sm text-muted-foreground leading-relaxed animate-fade-in">
+                  {faq.answer}
                 </div>
-              )
-            })}
-          </div>
-        ))}
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-  )
+  );
 }

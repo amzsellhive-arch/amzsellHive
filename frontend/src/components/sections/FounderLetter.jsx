@@ -1,44 +1,44 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 export default function FounderLetter() {
   return (
-    <section className="section founder">
-      <div className="container founder-letter">
-        <span className="kicker">A letter from the founder</span>
-        <h2>Dear Amazon Seller,</h2>
+    <section className="py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-border p-8 md:p-12 shadow-sm">
+          <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">A note from the founder</span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold mt-3 mb-8 tracking-tight">
+            Dear Amazon Seller,
+          </h2>
 
-        <p>
-          I've spent five years inside Amazon operations — four of them in advertising. I've watched click costs
-          climb while conversions stayed flat. I've seen sessions go up while profit went backwards. And I've seen
-          competitors copy a listing within weeks of it taking off.
-        </p>
-        <p>
-          Most of all, I've watched brands get sold a story. Agencies with big boards and "revenue growth" decks,
-          while the net number quietly drains. The screenshots look great. The profit doesn't.
-        </p>
-        <p>
-          That's why SellHive runs the opposite way. I'm the founder and I'm the operator in your campaigns. I've
-          run a 40-person team, trained more than 50 specialists, and held a $652K quarter at ~5% TACOS through
-          losses, team splits and a thousand deleted listings. I know what it takes to keep net profit real.
-        </p>
-        <p>
-          I take on a limited number of accounts because delivery quality is the whole business. If your niche
-          can't win, I'll tell you — and walk away rather than take your money.
-        </p>
-        <p>
-          If you're tired of revenue that doesn't end up in your pocket, let's find out what your account is
-          actually leaking. It's free, it's yours to keep, and you'll see the math before you spend a cent.
-        </p>
+          <div className="prose prose-sm max-w-none text-muted-foreground space-y-4">
+            <p>
+              I know what it feels like to watch your ad spend climb while your net profit stays flat — or worse, drops. I've managed it from the inside: a 40-person team, $652K in a single quarter, TACOS held near 5% through a team split, a thousand deleted SPUs, and Buy Box losses from auto-pricing.
+            </p>
+            <p>
+              What I kept seeing was the same pattern: brands sold revenue growth that quietly destroyed their margin. Agencies sending sales screenshots while the net number went backwards. Reports full of impressions and clicks, but silent on the only number that matters — did you actually make money?
+            </p>
+            <p>
+              SellHive runs the opposite way. Every account managed to gross and net profit, with the math shown before anyone is asked to pay. The free audit isn't a lead magnet — it's how I prove competence before asking for trust.
+            </p>
+            <p>
+              If your niche can't win, I'll tell you and walk away. If it can, I'll show you exactly where the money is leaking and what it takes to fix it.
+            </p>
+          </div>
 
-        <div className="signature">
-          <strong>Ishfaq Ahmad</strong>
-          <span>Founder, SellHive</span>
-        </div>
-
-        <div className="hero-actions">
-          <Link to="/audit" className="btn btn-primary btn-xl">Book a Free Strategy Call</Link>
+          <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="font-bold text-foreground">Ishfaq Ahmad</div>
+              <div className="text-sm text-muted-foreground">Founder, SellHive</div>
+            </div>
+            <Link to="/audit">
+              <Button className="btn-glow bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white font-semibold px-6 rounded-full">
+                Show me what my account is leaking
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
