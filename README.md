@@ -1,6 +1,6 @@
 # SellHive — Project Skeleton
 
-React (frontend) + Laravel (backend/API) 
+React (frontend) + Laravel (backend/API)
 
 ## Structure
 ```
@@ -27,6 +27,3 @@ cd frontend
 cp .env.example .env
 npm install
 npm run dev          # runs on http://localhost:5173
-```
-
-
