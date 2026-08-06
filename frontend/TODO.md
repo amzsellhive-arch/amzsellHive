@@ -1,8 +1,7 @@
-# Fix frontend proxy errors (ECONNREFUSED)
+# Fix TypeScript Build Errors
 
-Goal: Eliminate failing SDK calls that cause Vite proxy errors without changing the frontend design.
-
-1. [ ] ResultsGrid.jsx - Remove `createClient()` call, use fallback data directly
-2. [ ] Testimonials.jsx - Remove `createClient()` call, use fallback data directly
-3. [ ] FAQ.jsx - Remove `createClient()` call, use fallback data directly
-4. [ ] Verify no design output changed
+## Steps
+- [x] 1. Fix `src/components/ui/toast.tsx` — add proper React `forwardRef` generic types and export `ToastProps` / `ToastActionElement` types (preserving all JSX/className design).
+- [x] 2. Fix `src/blog-routes.tsx` — remove imports of non-existent `./pages/blog/*` files.
+- [x] 3. Fix `tsconfig.node.json` — change include to `vite.config.js` and add `allowJs`.
+- [x] 4. Re-run `npx tsc -b` to verify build passes.

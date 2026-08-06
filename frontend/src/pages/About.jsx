@@ -13,37 +13,38 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">About</span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
+<h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
                   The founder runs your account
                 </h1>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   SellHive isn't a call centre with your brand sitting in a queue. You work directly with the operator who built and trained a 40-person Amazon team — not a junior handed your login.
                 </p>
               </div>
-              <div className="bg-white rounded-2xl border border-border p-7 shadow-sm">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-12 h-12 rounded-full bg-[hsl(16,80%,52%)]/10 flex items-center justify-center">
-                    <span className="text-[hsl(16,80%,52%)] font-bold text-lg">IA</span>
-                  </div>
-                  <div>
-                    <div className="font-bold">Ishfaq Ahmad</div>
-                    <div className="text-sm text-muted-foreground">Founder</div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { label: 'Years in Amazon', value: '5+' },
-                    { label: 'Specialized in PPC', value: '4+ years' },
-                    { label: 'Team previously led & trained', value: '40+ specialists' },
-                    { label: 'Team sales managed', value: '$10M+' },
-                    { label: 'TACOS held at scale', value: '~5%' },
-                  ].map((row, i) => (
-                    <div key={i} className="flex justify-between py-2 border-b border-border last:border-0">
-                      <span className="text-sm text-muted-foreground">{row.label}</span>
-                      <span className="font-bold text-sm">{row.value}</span>
+<div className="card-orbit">
+                <div className="card-orbit-inner">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-12 h-12 rounded-full bg-[hsl(16,80%,52%)]/10 flex items-center justify-center">
+                      <span className="text-[hsl(16,80%,52%)] font-bold text-lg">IA</span>
                     </div>
-                  ))}
+                    <div>
+                      <div className="font-bold">Ishfaq Ahmad</div>
+                      <div className="text-sm text-muted-foreground">Founder</div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { label: 'Years in Amazon', value: '5+' },
+                      { label: 'Specialized in PPC', value: '4+ years' },
+                      { label: 'Team previously led & trained', value: '40+ specialists' },
+                      { label: 'Team sales managed', value: '$10M+' },
+                      { label: 'TACOS held at scale', value: '~5%' },
+                    ].map((row, i) => (
+                      <div key={i} className="flex justify-between py-2 border-b border-border last:border-0">
+                        <span className="text-sm text-muted-foreground">{row.label}</span>
+                        <span className="font-bold text-sm">{row.value}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

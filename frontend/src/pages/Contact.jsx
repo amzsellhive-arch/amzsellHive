@@ -5,11 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { createClient } from '@metagptx/web-sdk';
+import { submitLead } from '@/services/leadService';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Clock, Linkedin } from 'lucide-react';
-
-const client = createClient();
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -22,9 +20,7 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await client.entities.leads.create({
-        data: { ...form, status: 'new' }
-      });
+      await submitLead({ ...form });
       toast({ title: 'Message sent!', description: 'You\'ll hear back within one business day.' });
       setForm({ name: '', email: '', brand: '', topic: 'Account & PPC management', message: '' });
     } catch {
@@ -41,8 +37,7 @@ const handleSubmit = async (e) => {
         {/* Page Hero */}
         <section className="pt-28 pb-12 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(260,60%,97%)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Contact</span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
+<h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
               Talk to the person who'll run your account
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -59,19 +54,21 @@ const handleSubmit = async (e) => {
                 <h2 className="text-2xl font-extrabold mb-6">Get in touch</h2>
                 <div className="space-y-4 mb-8">
                   {[
-                    { icon: Mail, label: 'Email', value: 'ishfaq@sellhive.co' },
+{ icon: Mail, label: 'Email', value: 'ishfaq@sellhive.com' },
                     { icon: Phone, label: 'WhatsApp', value: 'Available on request' },
                     { icon: Linkedin, label: 'LinkedIn', value: 'Ishfaq Ahmad' },
                     { icon: MapPin, label: 'Based in', value: 'Islamabad, Pakistan — US, UK & EU marketplaces' },
                     { icon: Clock, label: 'Response time', value: 'Within one business day' },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 bg-[hsl(30,20%,97%)] rounded-xl">
-                      <div className="w-10 h-10 rounded-lg bg-[hsl(16,80%,52%)]/10 flex items-center justify-center">
-                        <item.icon size={18} className="text-[hsl(16,80%,52%)]" />
-                      </div>
-                      <div>
-                        <div className="text-xs text-muted-foreground">{item.label}</div>
-                        <div className="text-sm font-medium">{item.value}</div>
+].map((item, i) => (
+                    <div key={i} className="contact-anim-border">
+                      <div className="flex items-center gap-4 p-4 bg-[hsl(30,20%,97%)] rounded-[12px]">
+                        <div className="w-10 h-10 rounded-lg bg-[hsl(16,80%,52%)]/10 flex items-center justify-center">
+                          <item.icon size={18} className="text-[hsl(16,80%,52%)]" />
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground">{item.label}</div>
+                          <div className="text-sm font-medium">{item.value}</div>
+                        </div>
                       </div>
                     </div>
                   ))}

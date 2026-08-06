@@ -7,6 +7,7 @@ use App\Http\Requests\StoreLeadRequest;
 use App\Mail\ThankYouMail;
 use App\Mail\NewLeadNotification;
 use App\Models\Lead;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class LeadController extends Controller
@@ -16,10 +17,7 @@ class LeadController extends Controller
     {
         $lead = Lead::create($request->validated() + ['status' => 'New']);
 
-        // TODO: send auto-reply to client
         Mail::to($lead->email)->send(new ThankYouMail($lead));
-
-        // TODO: notify admin (email / WhatsApp)
         Mail::to(config('mail.admin_address'))->send(new NewLeadNotification($lead));
 
         return response()->json(['message' => 'Lead received', 'lead' => $lead], 201);
@@ -28,12 +26,26 @@ class LeadController extends Controller
     // GET /api/admin/leads (protected - admin panel)
     public function index()
     {
-        return Lead::latest()->get();
+        return response()->json(Lead::latest()->get());
     }
 
-    // PATCH /api/admin/leads/{id} (protected - update status)
-    public function updateStatus(Lead $lead)
+    // PATCH /api/admin/leads/{lead} (protected - update status)
+    public function updateStatus(Request $request, Lead $lead)
     {
-        // TODO: validate status in [New, Contact, Booking, Client]
+        $request->validate([
+            'status' => 'required|in:New,Contact,Booking,Client',
+        ]);
+
+        $lead->update(['status' => $request->status]);
+
+        return response()->json(['message' => 'Status updated', 'lead' => $lead]);
+    }
+
+    // DELETE /api/admin/leads/{lead} (protected)
+    public function destroy(Lead $lead)
+    {
+        $lead->delete();
+
+        return response()->json(['message' => 'Lead deleted']);
     }
 }

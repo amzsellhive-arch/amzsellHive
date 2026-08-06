@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // e.g. http://localhost:8000/api
+  // Use relative /api so requests route through the Vite dev proxy to the
+  // Laravel backend — avoids CORS entirely in development.
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: { 'Content-Type': 'application/json' },
 })
 

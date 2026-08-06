@@ -7,9 +7,22 @@ const toastVariants = {
   destructive: 'border-destructive bg-destructive text-destructive-foreground',
 };
 
-const ToastProvider = ({ children }) => <>{children}</>;
+type ToastProps = React.ComponentPropsWithoutRef<'li'> & {
+  variant?: keyof typeof toastVariants;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
-const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
+type ToastActionElement = React.ReactElement<typeof ToastAction>;
+
+const ToastProvider = ({ children }: { children: React.ReactNode }) => (
+  <>{children}</>
+);
+
+const ToastViewport = React.forwardRef<
+  HTMLOListElement,
+  React.ComponentPropsWithoutRef<'ol'>
+>(({ className, ...props }, ref) => (
   <ol
     ref={ref}
     className={cn(
@@ -21,21 +34,26 @@ const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
 ));
 ToastViewport.displayName = 'ToastViewport';
 
-const Toast = React.forwardRef(({ className, variant = 'default', ...props }, ref) => (
-  <li
-    ref={ref}
-    role="status"
-    className={cn(
-      'pointer-events-auto relative flex w-full items-center justify-between space-x-4 rounded-lg border p-4 shadow-lg',
-      toastVariants[variant],
-      className
-    )}
-    {...props}
-  />
-));
+const Toast = React.forwardRef<HTMLLIElement, ToastProps>(
+  ({ className, variant = 'default', ...props }, ref) => (
+    <li
+      ref={ref}
+      role="status"
+      className={cn(
+        'pointer-events-auto relative flex w-full items-center justify-between space-x-4 rounded-lg border p-4 shadow-lg',
+        toastVariants[variant],
+        className
+      )}
+      {...props}
+    />
+  )
+);
 Toast.displayName = 'Toast';
 
-const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
+const ToastAction = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<'button'>
+>(({ className, ...props }, ref) => (
   <button
     ref={ref}
     className={cn(
@@ -47,14 +65,16 @@ const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
 ));
 ToastAction.displayName = 'ToastAction';
 
-const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
+const ToastClose = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<'button'>
+>(({ className, ...props }, ref) => (
   <button
     ref={ref}
     className={cn(
       'absolute right-2 top-2 rounded-md p-1 text-foreground/50 transition-opacity hover:text-foreground',
       className
     )}
-    toast-close=""
     {...props}
   >
     <X className="h-4 w-4" />
@@ -62,12 +82,18 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
 ));
 ToastClose.displayName = 'ToastClose';
 
-const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
+const ToastTitle = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<'div'>
+>(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('text-sm font-semibold', className)} {...props} />
 ));
 ToastTitle.displayName = 'ToastTitle';
 
-const ToastDescription = React.forwardRef(({ className, ...props }, ref) => (
+const ToastDescription = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<'div'>
+>(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('text-sm opacity-90', className)} {...props} />
 ));
 ToastDescription.displayName = 'ToastDescription';
@@ -81,3 +107,4 @@ export {
   ToastClose,
   ToastAction,
 };
+export type { ToastProps, ToastActionElement };

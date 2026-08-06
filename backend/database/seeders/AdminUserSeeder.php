@@ -10,11 +10,13 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Ishfaq Ahmad',
-            'email' => 'admin@sellhive.com',
-            'password' => Hash::make('change-this-password'),
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@sellhive.com'],
+            [
+                'name' => 'Ishfaq Ahmad',
+                'password' => Hash::make('change-this-password'),
+                'role' => 'admin',
+            ]
+        );
     }
 }

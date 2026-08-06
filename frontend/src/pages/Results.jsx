@@ -11,8 +11,7 @@ export default function ResultsPage() {
         {/* Page Hero */}
         <section className="pt-28 pb-16 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(16,90%,97%)]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Results</span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
+<h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
               Real accounts. Real numbers.
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

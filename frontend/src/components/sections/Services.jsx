@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { TrendingDown, BarChart3, Rocket, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function ServicesSection() {
   const services = [
@@ -58,13 +59,13 @@ export default function ServicesSection() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <Link
-            to="/services"
-            className="inline-flex items-center gap-2 text-[hsl(16,80%,52%)] font-semibold hover:underline"
-          >
-            View all services & pricing <ArrowRight size={16} />
-          </Link>
+<div className="mt-10 text-center">
+          <Button asChild size="lg" className="group btn-animated">
+            <Link to="/services">
+              View all services &amp; pricing
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

@@ -5,10 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { createClient } from '@metagptx/web-sdk';
+import { submitAudit } from '@/services/leadService';
 import { CheckCircle2 } from 'lucide-react';
-
-const client = createClient();
 
 export default function AuditPage() {
   const { toast } = useToast();
@@ -22,9 +20,7 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await client.entities.audit_requests.create({
-        data: { ...form, status: 'new' }
-      });
+      await submitAudit({ ...form });
       setSubmitted(true);
       toast({ title: 'Audit request received!', description: 'You\'ll hear back within one business day.' });
     } catch {

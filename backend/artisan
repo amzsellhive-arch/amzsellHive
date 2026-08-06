@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Console\Kernel;
+
+define('LARAVEL_START', microtime(true));
+
+// Resolve the application bootstrap file
+require __DIR__.'/vendor/autoload.php';
+
+// Bootstrap the application
+$app = require_once __DIR__.'/bootstrap/app.php';
+
+// Run the Artisan console
+$kernel = $app->make(Kernel::class);
+$status = $kernel->handle(
+    $input = new ArgvInput,
+    $output = new ConsoleOutput
+);
+
+// Shutdown the application
+$kernel->terminate($input, $output);
+
+exit($status);

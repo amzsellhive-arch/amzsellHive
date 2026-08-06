@@ -22,11 +22,11 @@ export default function ResultsGrid() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.map((card) => (
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cards.map((card, index) => (
             <div
               key={card.id}
-              className="bg-white rounded-2xl border border-border overflow-hidden card-hover"
+              className={`bg-white rounded-2xl border border-border overflow-hidden card-hover card-shine result-card-enter stagger-${index + 1}`}
             >
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -56,12 +56,9 @@ export default function ResultsGrid() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
-          <Link
-            to="/results"
-            className="inline-flex items-center gap-2 text-[hsl(16,80%,52%)] font-semibold hover:underline"
-          >
-            See all results <ArrowRight size={16} />
+<div className="mt-10 text-center">
+          <Link to="/results" className="btn-see-results">
+            See all results <ArrowRight size={18} className="btn-arrow" />
           </Link>
         </div>
       </div>

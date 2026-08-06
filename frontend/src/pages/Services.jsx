@@ -12,9 +12,8 @@ export default function ServicesPage() {
       <main>
         {/* Page Hero */}
         <section className="pt-28 pb-16 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(260,60%,97%)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Services</span>
-            <h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight max-w-3xl mx-auto">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 className="text-4xl sm:text-5xl font-extrabold mb-5 tracking-tight max-w-3xl mx-auto">
               Everything your Amazon account needs, run to profit
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
@@ -36,7 +35,7 @@ export default function ServicesPage() {
             <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
               Day-to-day management of your full advertising account, reported in the metrics that decide whether you actually made money.
             </p>
-            <div className="grid md:grid-cols-2 gap-6">
+<div className="grid md:grid-cols-2 gap-6">
               {[
                 'Sponsored Products, Brands, Video & Display',
                 'Search-term harvesting on a three-pass review cycle',
@@ -47,9 +46,13 @@ export default function ServicesPage() {
                 'Weekly and monthly reporting: Sales, ACOS, TACOS, GP & NP',
                 'Proactive alerts — you hear about problems from us first',
               ].map((item, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <CheckCircle2 size={18} className="text-[hsl(16,80%,52%)] mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{item}</span>
+                <div key={i} className="card-orbit">
+                  <div className="card-orbit-inner">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle2 size={18} className="text-[hsl(16,80%,52%)] mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{item}</span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

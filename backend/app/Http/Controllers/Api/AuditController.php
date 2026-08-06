@@ -4,7 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAuditRequest;
+use App\Mail\ThankYouMail;
+use App\Mail\NewLeadNotification;
 use App\Models\AuditRequest;
+use App\Models\Lead;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AuditController extends Controller
 {
@@ -13,7 +18,18 @@ class AuditController extends Controller
     {
         $audit = AuditRequest::create($request->validated());
 
-        // TODO: thank-you email + admin notification (same pattern as LeadController)
+        // Send thank-you + admin notification via a transient Lead for the mail templates
+        $lead = new Lead([
+            'name' => $audit->name,
+            'email' => $audit->email,
+            'brand' => $audit->brand,
+            'message' => 'Audit request: ' . $audit->problem,
+            'service_interest' => 'Free Account Audit',
+        ]);
+        $lead->status = 'New';
+
+        Mail::to($audit->email)->send(new ThankYouMail($lead));
+        Mail::to(config('mail.admin_address'))->send(new NewLeadNotification($lead));
 
         return response()->json(['message' => 'Audit request received', 'audit' => $audit], 201);
     }
@@ -21,6 +37,14 @@ class AuditController extends Controller
     // GET /api/admin/audit-requests (protected)
     public function index()
     {
-        return AuditRequest::latest()->get();
+        return response()->json(AuditRequest::latest()->get());
+    }
+
+    // DELETE /api/admin/audit-requests/{auditRequest} (protected)
+    public function destroy(AuditRequest $auditRequest)
+    {
+        $auditRequest->delete();
+
+        return response()->json(['message' => 'Audit request deleted']);
     }
 }

@@ -3,3 +3,10 @@
 /storage/*.key
 /public/storage
 .DS_Store
+
+# Laravel runtime artifacts
+/bootstrap/cache/*.php
+storage/framework/views/*.php
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*

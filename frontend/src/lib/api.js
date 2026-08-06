@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { submitLead, submitAudit } from '../services/leadService';
+import { getResultCards } from '../services/cmsService';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
@@ -15,26 +17,25 @@ api.interceptors.request.use((config) => {
 export const client = {
   auth: {
     login: async () => {
-      // TODO: wire up real login flow
-      throw new Error('Not implemented');
+      throw new Error('Use authApi.login from lib/auth.js');
     },
   },
   entities: {
     audit_requests: {
       create: async ({ data }) => {
-        const res = await api.post('/audit-requests', data);
+        const res = await submitAudit(data);
         return res.data;
       },
     },
     leads: {
       create: async ({ data }) => {
-        const res = await api.post('/leads', data);
+        const res = await submitLead(data);
         return res.data;
       },
     },
     result_cards: {
-      query: async ({ query, limit }) => {
-        const res = await api.get('/result-cards', { params: { limit } });
+      query: async ({ query, limit } = {}) => {
+        const res = await getResultCards();
         return res.data;
       },
     },
