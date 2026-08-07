@@ -6,7 +6,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('FRONTEND_URLS', 'http://localhost:5173,http://localhost:3000')),
+    // Allow all origins so the client-facing forms work from any host
+    // (local dev, staging, or the live production domain) without the browser
+    // blocking the JSON response. The public submit endpoints require no auth.
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
@@ -16,6 +19,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 
 ];

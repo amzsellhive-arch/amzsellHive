@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Start Here</h4>
             <nav className="flex flex-col gap-2">
               <Link to="/audit" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">Free Account Audit</Link>
-              <a href="mailto:ishfaq@sellhive.co" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">ishfaq@sellhive.co</a>
+              <a href="mailto:ishfaq@sellhive.co" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">ishfaq@sellhive.com</a>
               <a href="https://linkedin.com/in/ishfaq-ahmad" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">LinkedIn</a>
             </nav>
           </div>

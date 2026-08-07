@@ -5,7 +5,7 @@ namespace App\Mail;
 use App\Models\Lead;
 use Illuminate\Mail\Mailable;
 
-// Alert sent to admin whenever a new lead comes in
+// Alert sent to admin whenever a new lead comes in.
 class NewLeadNotification extends Mailable
 {
     public function __construct(public Lead $lead) {}

@@ -270,13 +270,18 @@ ul { list-style: none; }
   padding: 2px;
   background: conic-gradient(
     from var(--contact-angle),
-    hsl(16, 80%, 55%),
-    hsl(30, 90%, 88%),
-    hsl(16, 80%, 55%),
-    hsl(24, 90%, 80%),
-    hsl(16, 80%, 55%)
+    hsl(16, 90%, 85%),
+    hsl(30, 100%, 92%),
+    hsl(16, 80%, 70%),
+    hsl(24, 100%, 88%),
+    hsl(16, 90%, 85%)
   );
   animation: contact-border-spin 3.5s linear infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.contact-anim-border:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(224, 83, 43, 0.18);
 }
 @keyframes contact-border-spin {
   to { --contact-angle: 360deg; }

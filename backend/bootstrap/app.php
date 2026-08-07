@@ -17,7 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => EnsureAdmin::class,
         ]);
-        $middleware->statefulApi();
+        // Note: statefulApi() is intentionally NOT used here because the frontend
+        // authenticates via Sanctum Bearer tokens (localStorage), not session cookies.
+        // statefulApi() would enable CSRF protection on API routes, which causes
+        // 419 errors on public POST endpoints like /api/audit-requests since the
+        // frontend never fetches an XSRF-TOKEN cookie.
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

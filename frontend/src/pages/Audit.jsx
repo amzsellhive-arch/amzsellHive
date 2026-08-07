@@ -6,28 +6,80 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { submitAudit } from '@/services/leadService';
+import { enqueueSubmission } from '@/lib/leadQueue';
 import { CheckCircle2 } from 'lucide-react';
 
 export default function AuditPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: '', brand: '', email: '', revenue: 'Under $30K', marketplace: 'United States', problem: ''
   });
 
-const handleSubmit = async (e) => {
+  const validate = () => {
+    const errs = {};
+    const name = form.name.trim();
+    const brand = form.brand.trim();
+    const problem = form.problem.trim();
+
+    if (!name) {
+      errs.name = 'Please enter your full name.';
+    } else if (name.length < 3) {
+      errs.name = 'Your name must be at least 3 characters.';
+    } else if (!/^[a-zA-Z][a-zA-Z\s'.-]*$/.test(name)) {
+      errs.name = 'Please enter a valid name (letters only).';
+    }
+
+    if (!brand) {
+      errs.brand = 'Please enter your brand / store name.';
+    } else if (brand.length < 2) {
+      errs.brand = 'Brand name must be at least 2 characters.';
+    }
+
+    if (!form.email) {
+      errs.email = 'Please enter your email address.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      errs.email = 'Please enter a valid email address.';
+    }
+
+    if (!problem) {
+      errs.problem = 'Please tell us what is bothering you.';
+    } else if (problem.length < 10) {
+      errs.problem = 'Please give a few more details (at least 10 characters).';
+    }
+
+    return errs;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return;
     setLoading(true);
     try {
       await submitAudit({ ...form });
-      setSubmitted(true);
-      toast({ title: 'Audit request received!', description: 'You\'ll hear back within one business day.' });
-    } catch {
-      toast({ title: 'Something went wrong', description: 'Please try again or email directly.', variant: 'destructive' });
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      // Show server-side validation errors inline if the backend rejects the data
+      if (error?.response?.status === 422 && error.response.data?.errors) {
+        const serverErrors = {};
+        Object.keys(error.response.data.errors).forEach((key) => {
+          serverErrors[key] = error.response.data.errors[key][0];
+        });
+        setErrors(serverErrors);
+        setLoading(false);
+        return;
+      }
+      // For any other failure (network/CORS/timeout), the backend may have
+      // been unreachable — save the submission locally so it is NEVER lost.
+      // It will be auto-retried the next time the app loads / backend is back.
+      console.warn('Audit submission network error — queueing for retry:', error);
+      enqueueSubmission('audit', { ...form });
     }
+    setSubmitted(true);
+    setLoading(false);
   };
 
   const auditSections = [
@@ -149,16 +201,19 @@ const handleSubmit = async (e) => {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium mb-1.5 block">Your name *</label>
-                      <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jane Smith" className="rounded-xl" />
+                      <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jane Smith" className={`rounded-xl ${errors.name ? 'border-red-400' : ''}`} />
+                      {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-1.5 block">Brand / store name *</label>
-                      <Input required value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} placeholder="Your Amazon brand" className="rounded-xl" />
+                      <Input required value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} placeholder="Your Amazon brand" className={`rounded-xl ${errors.brand ? 'border-red-400' : ''}`} />
+                      {errors.brand && <p className="text-xs text-red-500 mt-1">{errors.brand}</p>}
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Email *</label>
-                    <Input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@brand.com" className="rounded-xl" />
+                    <Input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@brand.com" className={`rounded-xl ${errors.email ? 'border-red-400' : ''}`} />
+                    {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
@@ -184,7 +239,8 @@ const handleSubmit = async (e) => {
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">What's bothering you most right now?</label>
-                    <Textarea value={form.problem} onChange={(e) => setForm({ ...form, problem: e.target.value })} placeholder="e.g. ACOS has climbed from 30% to 55% since January..." rows={4} className="rounded-xl" />
+                    <Textarea value={form.problem} onChange={(e) => setForm({ ...form, problem: e.target.value })} placeholder="e.g. ACOS has climbed from 30% to 55% since January..." rows={4} className={`rounded-xl ${errors.problem ? 'border-red-400' : ''}`} />
+                    {errors.problem && <p className="text-xs text-red-500 mt-1">{errors.problem}</p>}
                     <p className="text-xs text-muted-foreground mt-1">The more specific you are, the more specific your audit.</p>
                   </div>
                   <Button type="submit" disabled={loading} className="w-full btn-glow bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white font-bold py-6 rounded-full text-base">

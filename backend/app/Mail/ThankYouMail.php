@@ -5,7 +5,7 @@ namespace App\Mail;
 use App\Models\Lead;
 use Illuminate\Mail\Mailable;
 
-// Auto-reply sent to the client right after form submission
+// Auto-reply sent to the client right after form submission.
 class ThankYouMail extends Mailable
 {
     public function __construct(public Lead $lead) {}

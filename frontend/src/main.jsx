@@ -1,7 +1,13 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
+import './styles/globals.css';
 import { loadRuntimeConfig } from './lib/config.js';
+import { flushQueueOnLoad } from './lib/leadQueue.js';
+
+// Best-effort retry of any contact/audit submissions that failed earlier
+// (e.g. backend was offline). Never blocks rendering.
+flushQueueOnLoad();
 
 // Load runtime configuration before rendering the app
 async function initializeApp() {
