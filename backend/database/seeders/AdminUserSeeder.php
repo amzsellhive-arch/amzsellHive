@@ -10,11 +10,17 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        $password = env('ADMIN_DEFAULT_PASSWORD');
+
+        if (!$password) {
+            throw new \RuntimeException('ADMIN_DEFAULT_PASSWORD must be set before seeding the admin user.');
+        }
+
         User::updateOrCreate(
-            ['email' => 'admin@sellhive.com'],
+            ['email' => env('ADMIN_EMAIL', 'admin@sellhive.com')],
             [
-                'name' => 'Ishfaq Ahmad',
-                'password' => Hash::make('admin123'),
+                'name' => env('ADMIN_NAME', 'SellHive Admin'),
+                'password' => Hash::make($password),
                 'role' => 'admin',
             ]
         );
