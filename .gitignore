@@ -1,0 +1,25 @@
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Runtime and generated files
+backend/database/*.sqlite
+backend/storage/logs/*.log
+backend/storage/framework/cache/data/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*.php
+backend/bootstrap/cache/*.php
+
+# Local development tools and logs
+cloudflared.exe
+*.log
+
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -69,9 +69,12 @@ export default defineConfig(({ command }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
-    server: {
+server: {
       host: '0.0.0.0', // Listen on all network interfaces.
       port: 5173, // Changed from process.env.VITE_PORT || '3000' to 5173
+      // Allow access from any host (e.g. Cloudflare/ngrok/localhost.run tunnels)
+      // so the demo works from a public trycloudflare.com URL.
+      allowedHosts: true,
       proxy: {
         '/api': {
           target: `http://localhost:${process.env.BACKEND_PORT || '8000'}`,

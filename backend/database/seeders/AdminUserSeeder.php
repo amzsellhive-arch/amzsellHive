@@ -14,7 +14,7 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@sellhive.com'],
             [
                 'name' => 'Ishfaq Ahmad',
-                'password' => Hash::make('change-this-password'),
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
             ]
         );

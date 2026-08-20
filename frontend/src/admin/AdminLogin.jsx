@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { authApi } from '../lib/auth';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
-import { Lock, Mail, LogIn, ArrowLeft } from 'lucide-react';
+import { Lock, Mail, LogIn } from 'lucide-react';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -19,7 +19,12 @@ export default function AdminLogin() {
     setLoading(true);
     try {
       const user = await authApi.login(form);
-      toast({ title: 'Logged in', description: `Welcome back, ${user.name || 'Admin'}` });
+      // Store a one-time flag so the professional welcome modal shows
+      // right after login and only once per session.
+      sessionStorage.setItem(
+        'admin_welcome',
+        JSON.stringify({ name: user.name || 'Admin' })
+      );
       navigate('/admin');
     } catch (err) {
       const msg = err?.response?.data?.errors?.email?.[0] || 'Invalid credentials';
@@ -32,9 +37,6 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(16,90%,97%)] p-4">
       <div className="w-full max-w-md">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
-          <ArrowLeft size={16} /> Back to site
-        </Link>
         <div className="bg-white rounded-2xl border border-border shadow-xl p-8">
           <div className="text-center mb-8">
             <div className="w-14 h-14 rounded-full bg-[hsl(16,80%,52%)]/10 flex items-center justify-center mx-auto mb-4">
@@ -54,7 +56,7 @@ export default function AdminLogin() {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="admin@sellhive.com"
+                  placeholder="admin@example.com"
                   required
                   className="rounded-xl pl-10"
                 />
