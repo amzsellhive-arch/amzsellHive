@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getResultCards } from '../services/cmsService';
 import { createResultCard, updateResultCard, deleteResultCard } from '../services/cmsService';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '../hooks/use-toast';
 import { ArrowLeft, Plus, Trash2, Save, X } from 'lucide-react';
 
