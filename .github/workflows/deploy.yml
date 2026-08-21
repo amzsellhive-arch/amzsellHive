@@ -19,6 +19,7 @@ jobs:
         run: |
           cd frontend
           npm install
+          mkdir -p dist
           npm run build
           
       - name: Deploy to Hostinger via FTP
