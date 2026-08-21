@@ -22,11 +22,12 @@ jobs:
           mkdir -p dist
           npm run build
           
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+            - name: Deploy to Hostinger via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./frontend/dist/
-          server-dir: /public_html/
+          port: 65002
+          local_path: ./frontend/dist/*
+          remote_path: /home/u532911591/domains/amzsellhive.com/public_html
