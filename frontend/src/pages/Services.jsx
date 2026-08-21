@@ -2,7 +2,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CTABand from '@/components/sections/CTABand';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { Search, Settings, TrendingUp, Users, CheckCircle2 } from 'lucide-react';
 
 export default function ServicesPage() {

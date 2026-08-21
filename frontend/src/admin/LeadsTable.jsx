@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getLeads, updateLeadStatus, deleteLead } from '../services/leadService';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '../hooks/use-toast';
 import { ArrowLeft, Trash2, Mail, Phone, ShoppingBag } from 'lucide-react';
 

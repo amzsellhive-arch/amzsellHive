@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDashboard, getLeads, updateLeadStatus, deleteLead } from '../services/leadService';
 import { authApi } from '../lib/auth';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/Button';
 import { useToast } from '../hooks/use-toast';
 import {
   Users, TrendingUp, ClipboardList, LogOut, LayoutDashboard, MousePointerClick, MessagesSquare, ArrowRight, Mail, Phone, ShoppingBag, Trash2, Sparkles, X, ExternalLink
