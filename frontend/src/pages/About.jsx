@@ -1,158 +1,172 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import CTABand from '@/components/sections/CTABand';
-import { CheckCircle2 } from 'lucide-react';
+import { CalendarDays, BarChart3, Users, Globe, ShieldCheck, FileText, Lock, Box, Image as ImageIcon, Settings } from 'lucide-react';
+import SiteLayout from '@/components/site/SiteLayout';
+import { Container, Eyebrow, YellowButton, PageHero, Hl } from '@/components/site/ui';
+import useSeo from '@/hooks/useSeo';
+
+const FOUNDERS = [
+  { name: 'Ishfaq Ahmad', role: 'Co-Founder', img: '/images/team/ishfaq-ahmad.webp' },
+  { name: 'Noman Arshad', role: 'Co-Founder', img: '/images/team/noman-arshad.webp' },
+];
+
+const EXPERIENCE = [
+  { icon: CalendarDays, value: '5+ Years', label: 'Amazon Experience' },
+  { icon: BarChart3, value: '$10M+', label: 'Sales Managed' },
+  { icon: Users, value: '30+', label: 'Brands & Accounts' },
+  { icon: Globe, value: '7', label: 'Marketplaces', sub: 'US, UK, CA, DE, FR, IT, ES' },
+];
+
+const WHAT_WE_DO = [
+  { icon: BarChart3, title: 'Amazon Advertising', text: 'PPC management, account optimization and performance analysis.' },
+  { icon: Box, title: 'Product Research & Sourcing', text: 'Data-driven product research and reliable supplier sourcing.' },
+  { icon: ImageIcon, title: 'Listing & Creative', text: 'Listing optimization, A+ content, product images and conversion improvement.' },
+  { icon: Settings, title: 'Operations & Account Support', text: 'FBA/FBM operations, inventory planning and ongoing account support.' },
+];
 
 export default function AboutPage() {
+  useSeo({
+    title: 'About SellHive',
+    description:
+      'SellHive was founded by two Amazon operators. A team of 15 Amazon specialists helping brands scale profitably across 7 marketplaces.',
+    image: '/images/site/about-team.webp',
+  });
+
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        {/* Page Hero */}
-        <section className="pt-28 pb-16 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(260,60%,97%)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-<h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
-                  The founder runs your account
-                </h1>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  SellHive isn't a call centre with your brand sitting in a queue. You work directly with the operator who built and trained a 40-person Amazon team — not a junior handed your login.
-                </p>
-              </div>
-<div className="card-orbit">
-                <div className="card-orbit-inner">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-12 h-12 rounded-full bg-[hsl(16,80%,52%)]/10 flex items-center justify-center">
-                      <span className="text-[hsl(16,80%,52%)] font-bold text-lg">IA</span>
-                    </div>
-                    <div>
-                      <div className="font-bold">Ishfaq Ahmad</div>
-                      <div className="text-sm text-muted-foreground">Founder</div>
-                    </div>
+    <SiteLayout>
+      <PageHero
+        eyebrow="About SellHive"
+        title={<>Built by Amazon Operators. Focused on <Hl>Profitable Growth.</Hl></>}
+        body="We’re a team of Amazon specialists helping brands solve real problems, scale profitably, and build a stronger, more valuable business on Amazon."
+        image="/images/site/about-hero.webp"
+        imageAlt="Amazon boxes and a laptop on a desk in the SellHive office"
+        actions={<YellowButton to="/audit">Get a Free Account Audit</YellowButton>}
+        trust={[
+          { icon: ShieldCheck, label: 'Expert-led analysis' },
+          { icon: FileText, label: 'No long-term contract' },
+          { icon: Lock, label: '100% confidential' },
+        ]}
+      />
+
+      {/* Story + founders */}
+      <section id="story" className="py-16 bg-white scroll-mt-20">
+        <Container className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <Eyebrow tone="yellow" className="!text-[#E0A800] mb-2">Our story</Eyebrow>
+            <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight leading-[1.15]">
+              From Hands-On Experience to a Growth Partner for Brands.
+            </h2>
+            <p className="mt-5 text-lg text-slate-600 leading-relaxed">
+              SellHive was founded by two Amazon operators who have worked with multiple brands across global marketplaces. We’ve seen the challenges that come with growing on Amazon, so we built SellHive to provide clear strategy, hands-on execution, and practical, results-focused support.
+            </p>
+          </div>
+          <ul className="grid grid-cols-2 gap-5">
+            {FOUNDERS.map((f) => (
+              <li key={f.name} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_-20px_rgba(8,35,63,0.45)]">
+                <div className="flex aspect-square items-center justify-center bg-gradient-to-b from-navy to-navy-deep">
+                  <img src={f.img} alt={`Portrait of ${f.name}, ${f.role} of SellHive`} loading="lazy" className="h-[78%] w-[78%] rounded-full object-cover ring-4 ring-hive/80" />
+                </div>
+                <div className="p-4 sm:p-5">
+                  <h3 className="font-bold text-navy text-lg">{f.name}</h3>
+                  <p className="text-[#E0A800] font-semibold text-sm">{f.role}</p>
+                  <span className="mt-3 block h-0.5 w-8 bg-hive" aria-hidden="true" />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      {/* Collective experience */}
+      <section className="pb-4" aria-labelledby="experience-heading">
+        <Container>
+          <div className="rounded-2xl bg-mist border border-slate-200 px-6 py-6 grid gap-6 lg:grid-cols-[auto_1fr] items-center">
+            <h2 id="experience-heading" className="font-jakarta font-extrabold text-navy uppercase tracking-wider text-sm sm:text-base leading-snug lg:pr-6 lg:border-r border-slate-300">
+              Our Collective<br className="hidden lg:block" /> Experience
+            </h2>
+            <ul className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {EXPERIENCE.map(({ icon: Icon, value, label, sub }) => (
+                <li key={label} className="flex items-center gap-3">
+                  <Icon size={34} className="text-[#F5B400] shrink-0" aria-hidden="true" />
+                  <div>
+                    <div className="font-jakarta text-xl sm:text-2xl font-extrabold text-navy leading-none">{value}</div>
+                    <div className="text-sm text-slate-600 mt-1">{label}</div>
+                    {sub && <div className="text-[11px] text-slate-500">{sub}</div>}
                   </div>
-                  <div className="space-y-3">
-                    {[
-                      { label: 'Years in Amazon', value: '5+' },
-                      { label: 'Specialized in PPC', value: '4+ years' },
-                      { label: 'Team previously led & trained', value: '40+ specialists' },
-                      { label: 'Team sales managed', value: '$10M+' },
-                      { label: 'TACOS held at scale', value: '~5%' },
-                    ].map((row, i) => (
-                      <div key={i} className="flex justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-sm text-muted-foreground">{row.label}</span>
-                        <span className="font-bold text-sm">{row.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
+
+      {/* Team */}
+      <section id="team" className="py-16 bg-white">
+        <Container className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 items-center">
+          <div>
+            <Eyebrow tone="yellow" className="!text-[#E0A800] mb-2">Our team</Eyebrow>
+            <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight">A Team of 15 Amazon Specialists.</h2>
+            <p className="mt-4 text-lg text-slate-600 leading-relaxed">
+              Our team of 15 dedicated professionals works across strategy, PPC, creative, operations, and account management to deliver real results for our clients.
+            </p>
+            <div className="mt-7">
+              <YellowButton to="/contact">Meet Our Team</YellowButton>
             </div>
           </div>
-        </section>
-
-        {/* Story */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12">
-              <div>
-                <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">The Story</span>
-                <h2 className="text-3xl font-extrabold mt-2 mb-5">Why SellHive exists</h2>
-                <div className="space-y-4 text-muted-foreground text-sm leading-relaxed">
-                  <p>
-                    I've spent five years inside Amazon operations, four of them specializing in advertising. At Rondaful — a global e-commerce and warehousing operator — I ran Group F as Supervisor: a team of 40+ specialists I trained in-house, managing a large multi-SKU catalog across international marketplaces.
-                  </p>
-                  <p>
-                    In one Q4 that group did $652,428 in sales at $97,276 profit with TACOS held near 5% — through a team split, a thousand deleted SPUs and Buy Box losses from auto-pricing.
-                  </p>
-                  <p>
-                    What I kept seeing was the same pattern: brands sold revenue growth that quietly destroyed their margin. Agencies sending sales screenshots while the net number went backwards. SellHive runs the opposite way — every account managed to gross and net profit, with the math shown before anyone is asked to pay.
-                  </p>
-                </div>
-                <div className="mt-6 bg-[hsl(16,90%,97%)] rounded-xl border border-[hsl(16,80%,52%)]/20 p-5">
-                  <p className="text-sm text-muted-foreground">
-                    <strong className="text-foreground">Founder-led, on purpose.</strong> SellHive today is deliberately small. That means the person who ran a 40-person operation is the one in your campaigns — and it means I take on a limited number of accounts.
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">How We Work</span>
-                <h2 className="text-3xl font-extrabold mt-2 mb-5">Four principles</h2>
-                <div className="space-y-4">
-                  {[
-                    { title: 'Proof before payment', desc: 'The free audit shows real dollars on your own account before there\'s any conversation about fees.' },
-                    { title: 'Profit over vanity', desc: 'We report GP and NP, not just revenue. Growth that costs you margin isn\'t growth.' },
-                    { title: 'Honest by default', desc: 'We separate verified results from targets, and we\'ll tell you plainly if your niche can\'t win.' },
-                    { title: 'No lock-in', desc: 'Month to month. We keep clients by performance, never by contract length.' },
-                  ].map((item, i) => (
-                    <div key={i} className="bg-white rounded-xl border border-border p-5 card-hover">
-                      <h3 className="font-bold text-sm mb-1">{item.title}</h3>
-                      <p className="text-xs text-muted-foreground">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <div className="relative">
+            <img
+              src="/images/site/about-team.webp"
+              alt="The SellHive team working at their desks in the office"
+              loading="lazy"
+              className="w-full rounded-2xl object-cover aspect-[16/9]"
+            />
+            <div className="absolute bottom-4 right-4 flex items-center gap-3 rounded-xl border border-white/20 bg-navy-deep/90 px-5 py-3 text-white backdrop-blur">
+              <span className="font-jakarta text-4xl font-extrabold text-hive leading-none">15</span>
+              <span className="leading-tight">
+                <span className="block font-bold">Team Members</span>
+                <span className="block text-sm text-white/80">Working together for your growth</span>
+              </span>
             </div>
           </div>
-        </section>
+        </Container>
+      </section>
 
-        {/* Experience */}
-        <section className="py-16 bg-[hsl(30,20%,97%)] border-y border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Background</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-8">Experience & Training</h2>
-            <div className="grid lg:grid-cols-2 gap-10">
-              <div>
-                <h3 className="font-bold mb-4">Roles</h3>
-                <div className="space-y-3">
-                  {[
-                    { company: 'Rondaful', role: 'Supervisor, Group F — led and trained 40+ specialists; PPC and budget allocation' },
-                    { company: 'NextGen Solutions', role: 'Managing Amazon client accounts, A–Z services' },
-                    { company: 'Brandegic', role: 'Growing Amazon account performance' },
-                    { company: 'My Amazon Guy (USA)', role: 'Advertising specialist — keyword research, campaign creation, ACOS control' },
-                  ].map((item, i) => (
-                    <div key={i} className="bg-white rounded-xl border border-border p-4">
-                      <div className="font-semibold text-sm">{item.company}</div>
-                      <div className="text-xs text-muted-foreground mt-1">{item.role}</div>
-                    </div>
-                  ))}
+      {/* What we do */}
+      <section className="py-16 bg-mist">
+        <Container>
+          <Eyebrow tone="yellow" className="!text-[#E0A800] mb-2">What we do</Eyebrow>
+          <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight">End-to-End Amazon Growth Support.</h2>
+          <p className="mt-3 text-lg text-slate-600">We help brands at every stage of their Amazon journey with practical, results-driven solutions.</p>
+          <ul className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {WHAT_WE_DO.map(({ icon: Icon, title, text }) => (
+              <li key={title} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5">
+                <Icon size={34} className="text-[#F5B400] shrink-0" aria-hidden="true" />
+                <div>
+                  <h3 className="font-bold text-navy">{title}</h3>
+                  <p className="mt-1 text-sm text-slate-600 leading-relaxed">{text}</p>
                 </div>
-              </div>
-              <div>
-                <h3 className="font-bold mb-4">Certifications</h3>
-                <ul className="space-y-2">
-                  {[
-                    'MAG PPC and MAG SEO certified',
-                    'Mina Elias — PPC University',
-                    'Amazon Ads Learning Console',
-                    'Advanced Private Label training (2024)',
-                    'Shark Advertising — RC PPC (2025–2026)',
-                    'Best Employee of the Year — Rondaful, 2024',
-                  ].map((cert, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 size={15} className="text-[hsl(16,80%,52%)] flex-shrink-0" />
-                      {cert}
-                    </li>
-                  ))}
-                </ul>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
 
-                <h3 className="font-bold mt-8 mb-3">Channels Covered</h3>
-                <div className="flex flex-wrap gap-2">
-                  {['Amazon', 'Walmart', 'eBay', 'TikTok Shop'].map((ch, i) => (
-                    <span key={i} className="px-3 py-1 bg-[hsl(16,80%,52%)]/10 text-[hsl(16,80%,52%)] text-xs font-bold rounded-full">
-                      {ch}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+      {/* Final CTA */}
+      <section className="relative bg-navy-deep text-white overflow-hidden">
+        <div className="absolute inset-y-0 right-0 w-full md:w-[55%]">
+          <img src="/images/site/about-cta.webp" alt="" aria-hidden="true" loading="lazy" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-deep via-navy-deep/60 to-transparent" />
+          <div className="absolute inset-0 bg-navy-deep/60 md:hidden" />
+        </div>
+        <Container className="relative py-16">
+          <Eyebrow tone="yellow" className="mb-2">Let’s grow together</Eyebrow>
+          <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold tracking-tight max-w-xl">
+            Ready to Unlock Your Amazon <Hl>Growth</Hl> Potential?
+          </h2>
+          <p className="mt-3 text-white/85 text-lg">Get a free, no-obligation audit and see where your account can improve.</p>
+          <div className="mt-7">
+            <YellowButton to="/audit">Get a Free Account Audit</YellowButton>
           </div>
-        </section>
-
-        <CTABand />
-      </main>
-      <Footer />
-    </div>
+        </Container>
+      </section>
+    </SiteLayout>
   );
 }

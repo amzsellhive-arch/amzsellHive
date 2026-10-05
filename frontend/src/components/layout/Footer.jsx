@@ -1,73 +1,104 @@
 import { Link } from 'react-router-dom';
+import { Check } from 'lucide-react';
+import { NAV_LINKS, whatsappLink } from '@/data/site';
+import { BrandIcon } from '@/components/site/BrandIcons';
+import useSiteSettings from '@/hooks/useSiteSettings';
+
+const TRUST = ['No contract, ever', 'Proof before payment', 'Month to month', 'Founder-led accounts'];
 
 export default function Footer() {
-  return (
-    <footer className="bg-[hsl(30,10%,10%)] text-[hsl(30,10%,75%)] pt-16 pb-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Final CTA above footer */}
-        <div className="text-center mb-12 pb-12 border-b border-white/10">
-          <h3 className="text-2xl font-bold text-white mb-3">
-            Ready to stop the leak?
-          </h3>
-          <p className="text-[hsl(30,10%,65%)] mb-6 max-w-lg mx-auto">
-            Every month you wait, the wasted spend keeps running. Let us show you exactly what your account is losing.
-          </p>
-          <Link
-            to="/audit"
-            className="inline-flex items-center justify-center px-8 py-3 bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white font-semibold rounded-full transition-all btn-glow"
-          >
-            Show me what my account is leaking
-          </Link>
-        </div>
+  const { settings } = useSiteSettings();
+  const socials = [
+    { key: 'linkedin', label: 'LinkedIn', url: settings.linkedin },
+    { key: 'youtube', label: 'YouTube', url: settings.youtube },
+    { key: 'x', label: 'X (Twitter)', url: settings.twitter },
+    { key: 'facebook', label: 'Facebook', url: settings.facebook },
+    { key: 'instagram', label: 'Instagram', url: settings.instagram },
+  ].filter((s) => s.url);
+  const wa = whatsappLink(settings.whatsapp);
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Link to="/" className="text-2xl font-extrabold text-white">
-              Sell<span className="text-[hsl(16,80%,52%)]">Hive</span>
+  return (
+    <footer className="bg-navy-deep text-white/85">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
+          <div>
+            <Link to="/" className="font-jakarta text-[1.7rem] font-extrabold text-white tracking-tight">
+              Sell<span className="text-hive">Hive</span>
             </Link>
-            <p className="mt-3 text-sm leading-relaxed max-w-[280px]">
+            <p className="mt-3 text-sm leading-relaxed max-w-xs">
               Amazon growth, measured in net profit. Full account and advertising management for private-label brands.
             </p>
+            {socials.length > 0 && (
+              <ul className="mt-5 flex gap-3" aria-label="Social media">
+                {socials.map((s) => (
+                  <li key={s.key}>
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.label}
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-hive hover:[&_svg]:fill-navy transition-colors"
+                    >
+                      <BrandIcon name={s.key} size={16} color="#fff" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
-          {/* Pages */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Pages</h4>
-            <nav className="flex flex-col gap-2">
-              <Link to="/services" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">Services</Link>
-              <Link to="/results" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">Results</Link>
-              <Link to="/about" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">About</Link>
-              <Link to="/contact" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">Contact</Link>
-            </nav>
+            <h2 className="text-white font-bold mb-4 text-base">Pages</h2>
+            <ul className="space-y-2 text-sm">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link to={l.href} className="hover:text-hive transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* Start Here */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Start Here</h4>
-            <nav className="flex flex-col gap-2">
-              <Link to="/audit" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">Free Account Audit</Link>
-              <a href="mailto:ishfaq@sellhive.co" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">ishfaq@sellhive.com</a>
-              <a href="https://linkedin.com/in/ishfaq-ahmad" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-[hsl(16,80%,52%)] transition-colors">LinkedIn</a>
-            </nav>
+            <h2 className="text-white font-bold mb-4 text-base">Contact</h2>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href={`mailto:${settings.email}`} className="hover:text-hive transition-colors break-all">{settings.email}</a>
+              </li>
+              {wa && (
+                <li>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="hover:text-hive transition-colors">
+                    WhatsApp: {settings.whatsapp}
+                  </a>
+                </li>
+              )}
+              <li>
+                {settings.linkedin ? (
+                  <a href={settings.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-hive transition-colors">LinkedIn</a>
+                ) : (
+                  <span>LinkedIn</span>
+                )}
+              </li>
+            </ul>
           </div>
 
-          {/* Trust */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Trust Signals</h4>
-            <div className="flex flex-col gap-2 text-sm">
-              <span>✓ No contract, ever</span>
-              <span>✓ Proof before payment</span>
-              <span>✓ Month to month</span>
-              <span>✓ Founder-led accounts</span>
-            </div>
+            <h2 className="text-white font-bold mb-4 text-base">Trust Signals</h2>
+            <ul className="space-y-2 text-sm">
+              {TRUST.map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <Check size={16} className="text-white shrink-0" aria-hidden="true" /> {t}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-[hsl(30,10%,50%)]">
-          <span>© 2026 SellHive. All rights reserved.</span>
-          <span>Founded by Ishfaq Ahmad</span>
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between text-xs text-white/60">
+          <span>© {new Date().getFullYear()} SellHive. All rights reserved.</span>
+          <span className="flex gap-5">
+            <Link to="/privacy-policy" className="hover:text-hive">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-hive">Terms of Service</Link>
+          </span>
         </div>
       </div>
     </footer>

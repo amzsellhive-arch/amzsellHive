@@ -22,7 +22,23 @@ content: [
       },
     },
     extend: {
+      fontFamily: {
+        jakarta: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
+        navy: {
+          DEFAULT: '#08233F',
+          deep: '#061B3A',
+          ink: '#0B2A4A',
+          soft: '#1B3A5C',
+        },
+        hive: {
+          DEFAULT: '#FFC400',
+          dark: '#F5B400',
+          light: '#FFF4CC',
+        },
+        brandblue: '#155EEF',
+        mist: '#F6F8FB',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

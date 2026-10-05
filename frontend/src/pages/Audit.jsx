@@ -1,55 +1,63 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { useState } from 'react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
+import {
+  ArrowRight, ShieldCheck, Lightbulb, Lock, BarChart3, TrendingUp, Target, Tag, Database, Search,
+  FileText, PieChart, Megaphone, Activity, CalendarCheck, CheckCircle2,
+} from 'lucide-react';
+import SiteLayout from '@/components/site/SiteLayout';
+import { Container, PageHero, Hl } from '@/components/site/ui';
+import { Field, TextInput, TextArea, SelectInput, validators, serverErrors } from '@/components/site/FormFields';
 import { submitAudit } from '@/services/leadService';
 import { enqueueSubmission } from '@/lib/leadQueue';
-import { CheckCircle2 } from 'lucide-react';
+import { MARKETPLACES } from '@/data/site';
+import useSeo from '@/hooks/useSeo';
+
+const BENEFITS = [
+  { icon: BarChart3, title: 'Account Analysis', text: 'Real data from your actual account.' },
+  { icon: Lightbulb, title: 'Actionable Recommendations', text: 'Clear steps you can implement.' },
+  { icon: TrendingUp, title: 'Growth Opportunities', text: 'Identify untapped potential to increase sales.' },
+  { icon: Target, title: 'No Obligation', text: '100% free audit with no commitment required.' },
+];
+
+const AREAS = [
+  { icon: Tag, title: 'ASIN Performance', text: 'Top & low performing ASINs, strengths and weaknesses.' },
+  { icon: Database, title: 'Advertising Analysis', text: 'Find wasted spend and opportunities to improve ACOS.' },
+  { icon: Search, title: 'Keyword Opportunities', text: 'High-performing and underperforming keywords.' },
+  { icon: FileText, title: 'Listing Health', text: 'SEO, content, images and conversion rate opportunities.' },
+  { icon: PieChart, title: 'Profitability Analysis', text: 'Revenue, margins and profitable ACOS targets.' },
+  { icon: Megaphone, title: 'Placement and Day-Parting', text: 'What’s working across placements and time of day.' },
+  { icon: Activity, title: 'Account Health', text: 'Overall performance, policy and inventory review.' },
+  { icon: CalendarCheck, title: '30-Day Growth Plan', text: 'A clear, customized action plan to improve results.' },
+];
+
+const EMPTY = { name: '', email: '', brand: '', marketplace: '', problem: '' };
 
 export default function AuditPage() {
-  const { toast } = useToast();
+  const [form, setForm] = useState(EMPTY);
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [form, setForm] = useState({
-    name: '', brand: '', email: '', revenue: 'Under $30K', marketplace: 'United States', problem: ''
+
+  useSeo({
+    title: 'Free Amazon Account Audit',
+    description:
+      'Get a free Amazon account audit: ASIN performance, advertising waste, keywords, listing health, profitability and a 30-day growth plan. No commitment.',
+    image: '/images/site/audit-hero.webp',
   });
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const validate = () => {
     const errs = {};
-    const name = form.name.trim();
-    const brand = form.brand.trim();
-    const problem = form.problem.trim();
-
-    if (!name) {
-      errs.name = 'Please enter your full name.';
-    } else if (name.length < 3) {
-      errs.name = 'Your name must be at least 3 characters.';
-    } else if (!/^[a-zA-Z][a-zA-Z\s'.-]*$/.test(name)) {
-      errs.name = 'Please enter a valid name (letters only).';
-    }
-
-    if (!brand) {
-      errs.brand = 'Please enter your brand / store name.';
-    } else if (brand.length < 2) {
-      errs.brand = 'Brand name must be at least 2 characters.';
-    }
-
-    if (!form.email) {
-      errs.email = 'Please enter your email address.';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      errs.email = 'Please enter a valid email address.';
-    }
-
-    if (!problem) {
-      errs.problem = 'Please tell us what is bothering you.';
-    } else if (problem.length < 10) {
-      errs.problem = 'Please give a few more details (at least 10 characters).';
-    }
-
+    const n = validators.name(form.name);
+    if (n) errs.name = n;
+    const em = validators.email(form.email);
+    if (em) errs.email = em;
+    const b = form.brand.trim();
+    if (!b) errs.brand = 'Please enter your brand / store name.';
+    else if (b.length < 2) errs.brand = 'Brand name must be at least 2 characters.';
+    if (!form.marketplace) errs.marketplace = 'Please select your main marketplace.';
+    const p = form.problem.trim();
+    if (p && p.length < 10) errs.problem = 'Please add a few more details (at least 10 characters), or leave this empty.';
     return errs;
   };
 
@@ -57,205 +65,175 @@ export default function AuditPage() {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
-    if (Object.keys(errs).length > 0) return;
+    if (Object.keys(errs).length) {
+      document.getElementById(Object.keys(errs)[0])?.focus();
+      return;
+    }
     setLoading(true);
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      brand: form.brand.trim(),
+      marketplace: form.marketplace,
+      problem: form.problem.trim() || undefined,
+    };
     try {
-      await submitAudit({ ...form });
+      await submitAudit(payload);
     } catch (error) {
-      // Show server-side validation errors inline if the backend rejects the data
-      if (error?.response?.status === 422 && error.response.data?.errors) {
-        const serverErrors = {};
-        Object.keys(error.response.data.errors).forEach((key) => {
-          serverErrors[key] = error.response.data.errors[key][0];
-        });
-        setErrors(serverErrors);
+      const se = serverErrors(error);
+      if (se) {
+        setErrors(se);
         setLoading(false);
         return;
       }
-      // For any other failure (network/CORS/timeout), the backend may have
-      // been unreachable — save the submission locally so it is NEVER lost.
-      // It will be auto-retried the next time the app loads / backend is back.
-      console.warn('Audit submission network error — queueing for retry:', error);
-      enqueueSubmission('audit', { ...form });
+      enqueueSubmission('audit', payload);
     }
     setSubmitted(true);
+    setForm(EMPTY);
     setLoading(false);
   };
 
-  const auditSections = [
-    { num: '01', title: 'Sales Overview', desc: 'Three months of sales, spend, ACOS, TACOS and ad-sales share.' },
-    { num: '02', title: '30-Day Recap', desc: 'Campaign Manager totals — where the last month\'s budget went.' },
-    { num: '03', title: 'ASIN Grading', desc: 'Every product graded A/B/C/Cut with its share of total ad spend.' },
-    { num: '04', title: 'Match-Type Analysis', desc: 'Auto vs manual, and where broad match is consuming budget.' },
-    { num: '05', title: 'Placement Analysis', desc: 'Top of Search vs Rest vs Product Pages — which deserves your money.' },
-    { num: '06', title: 'Day-Parting', desc: 'The hours producing orders, and hours spending without returning.' },
-    { num: '07', title: 'Listing Health', desc: 'Images, title, A+ content, reviews — the conversion side no bid can fix.' },
-    { num: '08', title: 'The Dollars', desc: 'Recoverable spend per month, top bleeders, and your ACOS ceiling.' },
-  ];
-
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        {/* Page Hero */}
-        <section className="pt-28 pb-16 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(16,90%,97%)]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              <div>
-                <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Free Account Audit</span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold mt-3 mb-5 tracking-tight">
-                  Find out what your account is leaking
-                </h1>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  A real teardown of your advertising and listings, with a dollar figure attached to every finding. No cost, no obligation.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    'Delivered within 48 hours of access',
-                    'Specific to your account — not a template with your logo',
-                    'Ends with clear paths forward and one obvious next step',
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 size={16} className="text-[hsl(16,80%,52%)] flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+    <SiteLayout>
+      <PageHero
+        eyebrow="Free Amazon Account Audit"
+        title={<>Get a Clear Plan for Your <Hl>Amazon Growth.</Hl></>}
+        body="We’ll review your Amazon account, identify what’s working, what’s not, and give you practical recommendations to increase sales and profitability."
+        image="/images/site/audit-hero.webp"
+        imageAlt="Laptop showing a SellHive sales dashboard with a rising bar chart"
+        actions={
+          <a
+            href="#audit-form"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-hive px-7 py-3.5 text-[15px] font-bold text-navy hover:bg-hive-dark transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hive focus-visible:ring-offset-2 focus-visible:ring-offset-navy-deep"
+          >
+            Request Free Audit <ArrowRight size={17} aria-hidden="true" />
+          </a>
+        }
+        trust={[
+          { icon: ShieldCheck, label: '100% Free · No commitment' },
+          { icon: FileText, label: 'Actionable insights' },
+          { icon: Lock, label: 'Your data stays confidential' },
+        ]}
+      />
 
-              {/* Offer Card */}
-              <div className="bg-white rounded-2xl border border-border p-7 shadow-lg">
-                <div className="text-center mb-5">
-                  <h3 className="font-bold text-lg">The Free Account Audit</h3>
-                  <p className="text-sm text-muted-foreground mt-1">A real teardown — not a sales call in disguise.</p>
-                </div>
-                <ul className="space-y-2 mb-5">
-                  {[
-                    'Every ASIN graded A/B/C/Cut with spend share',
-                    'Wasted spend calculated in real dollars/month',
-                    'Top three bleeders named with the fix for each',
-                    'Maximum profitable ranking ACOS from your margin',
-                    'Placement, match-type and day-parting leaks mapped',
-                    'A 30-day plan written to daily budget level',
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                      <CheckCircle2 size={13} className="text-green-500 mt-0.5 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex items-center justify-between p-4 bg-[hsl(30,20%,97%)] rounded-xl mb-4">
-                  <span className="text-sm text-muted-foreground">What it costs you</span>
-                  <span className="text-2xl font-extrabold text-[hsl(16,80%,52%)]">$0</span>
-                </div>
-                <ul className="space-y-1 text-[11px] text-muted-foreground">
-                  <li>• Takes about 10 minutes of your time</li>
-                  <li>• You keep the audit whether we work together or not</li>
-                  <li>• No contract, ever</li>
-                  <li>• If your niche can't win, we'll tell you and walk away</li>
-                </ul>
-              </div>
-            </div>
+      {/* Benefits */}
+      <section className="py-16 bg-white">
+        <Container>
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight">
+              What You’ll Get in Your <Hl className="text-[#F5B400]">Free Audit</Hl>
+            </h2>
+            <p className="mt-3 text-lg text-slate-600">
+              A clear and practical analysis of your Amazon account to help you identify opportunities and grow profitably.
+            </p>
           </div>
-        </section>
+          <ul className="mt-12 grid grid-cols-2 lg:grid-cols-4">
+            {BENEFITS.map(({ icon: Icon, title, text }, i) => (
+              <li key={title} className={`px-4 py-4 text-center ${i > 0 ? 'lg:border-l' : ''} ${i % 2 ? 'border-l' : ''} border-slate-200`}>
+                <Icon size={40} className="mx-auto text-[#F5B400]" aria-hidden="true" />
+                <h3 className="mt-4 font-bold text-navy">{title}</h3>
+                <p className="mt-1 text-slate-600 text-[15px]">{text}</p>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
 
-        {/* What's Included */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">What's Included</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-8">Eight sections, every one with a number attached</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {auditSections.map((s) => (
-                <div key={s.num} className="bg-white rounded-xl border border-border p-5 card-hover">
-                  <span className="text-[hsl(16,80%,52%)] font-bold text-xs">{s.num}</span>
-                  <h3 className="font-bold text-sm mt-2 mb-1">{s.title}</h3>
-                  <p className="text-xs text-muted-foreground">{s.desc}</p>
-                </div>
-              ))}
-            </div>
+      {/* 8 areas */}
+      <section className="py-16 bg-[#EEF4FC]">
+        <Container>
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight">
+              <Hl className="text-[#F5B400]">8 Key Areas</Hl> We Analyze
+            </h2>
+            <p className="mt-3 text-lg text-slate-600">Our audit covers the most important aspects of your Amazon business.</p>
           </div>
-        </section>
+          <ol className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {AREAS.map(({ icon: Icon, title, text }, i) => (
+              <li key={title} className="rounded-xl bg-white p-5 shadow-[0_8px_24px_-20px_rgba(8,35,63,0.5)]">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F5B400] text-sm font-bold text-white">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <Icon size={26} className="text-navy" aria-hidden="true" />
+                </div>
+                <h3 className="mt-4 font-bold text-navy text-lg">{title}</h3>
+                <p className="mt-1 text-slate-600 text-[15px]">{text}</p>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
 
-        {/* Audit Form */}
-        <section className="py-16 bg-[hsl(30,20%,97%)] border-y border-border">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Form */}
+      <section id="audit-form" className="py-16 bg-white scroll-mt-20">
+        <Container className="grid lg:grid-cols-[1.5fr_1fr] gap-8 items-start">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-[0_12px_40px_-28px_rgba(8,35,63,0.5)]">
+            <h2 className="font-jakarta text-3xl font-extrabold text-navy tracking-tight">
+              Request Your <Hl className="text-[#F5B400]">Free Amazon Audit</Hl>
+            </h2>
+            <p className="mt-2 text-slate-600">
+              Fill in a few details and we’ll review your account and send you a customized audit report with insights and recommendations.
+            </p>
+
             {submitted ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle2 size={32} className="text-green-600" />
-                </div>
-                <h2 className="text-2xl font-extrabold mb-3">Audit request received!</h2>
-                <p className="text-muted-foreground">
-                  You'll hear back within one business day. If your account isn't a fit, we'll say so — and still send you what we found.
-                </p>
+              <div className="mt-8 rounded-xl border border-green-200 bg-green-50 p-6 text-center" role="status">
+                <CheckCircle2 size={40} className="mx-auto text-green-600" aria-hidden="true" />
+                <p className="mt-3 font-bold text-navy text-lg">Audit request received.</p>
+                <p className="mt-1 text-slate-600">We’ll review your account and reply within one business day.</p>
               </div>
             ) : (
-              <>
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-extrabold mb-3">Request your free audit</h2>
-                  <p className="text-muted-foreground">
-                    Fill this in and you'll hear back within one business day.
-                  </p>
+              <form onSubmit={handleSubmit} noValidate className="mt-6 grid sm:grid-cols-2 gap-5">
+                <Field id="name" label="Your name" required error={errors.name}>
+                  <TextInput id="name" autoComplete="name" placeholder="Jane Smith" value={form.name} onChange={set('name')} error={errors.name} />
+                </Field>
+                <Field id="email" label="Email" required error={errors.email}>
+                  <TextInput id="email" type="email" autoComplete="email" placeholder="you@brand.com" value={form.email} onChange={set('email')} error={errors.email} />
+                </Field>
+                <Field id="brand" label="Brand / Store Name" required error={errors.brand}>
+                  <TextInput id="brand" autoComplete="organization" placeholder="Your Amazon brand" value={form.brand} onChange={set('brand')} error={errors.brand} />
+                </Field>
+                <Field id="marketplace" label="Main Marketplace" required error={errors.marketplace}>
+                  <SelectInput id="marketplace" placeholder="Select marketplace" options={MARKETPLACES} value={form.marketplace} onChange={set('marketplace')} error={errors.marketplace} />
+                </Field>
+                <Field id="problem" label="Additional Information (optional)" error={errors.problem} className="sm:col-span-2">
+                  <TextArea id="problem" rows={3} placeholder="Let us know any specific goals or challenges." value={form.problem} onChange={set('problem')} error={errors.problem} />
+                </Field>
+                <div className="sm:col-span-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-hive px-6 py-3.5 font-bold text-navy hover:bg-hive-dark transition-colors disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-hive"
+                  >
+                    {loading ? 'Sending…' : <>Request Free Audit <ArrowRight size={18} aria-hidden="true" /></>}
+                  </button>
+                  <p className="mt-3 text-center text-sm text-slate-500">We typically respond within one business day.</p>
                 </div>
-                <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-border p-8 space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Your name *</label>
-                      <Input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Jane Smith" className={`rounded-xl ${errors.name ? 'border-red-400' : ''}`} />
-                      {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Brand / store name *</label>
-                      <Input required value={form.brand} onChange={(e) => setForm({ ...form, brand: e.target.value })} placeholder="Your Amazon brand" className={`rounded-xl ${errors.brand ? 'border-red-400' : ''}`} />
-                      {errors.brand && <p className="text-xs text-red-500 mt-1">{errors.brand}</p>}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-1.5 block">Email *</label>
-                    <Input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@brand.com" className={`rounded-xl ${errors.email ? 'border-red-400' : ''}`} />
-                    {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Monthly Amazon revenue</label>
-                      <select value={form.revenue} onChange={(e) => setForm({ ...form, revenue: e.target.value })} className="w-full px-3 py-2 border border-border rounded-xl text-sm bg-white">
-                        <option>Under $30K</option>
-                        <option>$30K – $100K</option>
-                        <option>$100K – $250K</option>
-                        <option>$250K – $500K</option>
-                        <option>$500K+</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-1.5 block">Main marketplace</label>
-                      <select value={form.marketplace} onChange={(e) => setForm({ ...form, marketplace: e.target.value })} className="w-full px-3 py-2 border border-border rounded-xl text-sm bg-white">
-                        <option>United States</option>
-                        <option>United Kingdom</option>
-                        <option>Europe</option>
-                        <option>UAE</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-1.5 block">What's bothering you most right now?</label>
-                    <Textarea value={form.problem} onChange={(e) => setForm({ ...form, problem: e.target.value })} placeholder="e.g. ACOS has climbed from 30% to 55% since January..." rows={4} className={`rounded-xl ${errors.problem ? 'border-red-400' : ''}`} />
-                    {errors.problem && <p className="text-xs text-red-500 mt-1">{errors.problem}</p>}
-                    <p className="text-xs text-muted-foreground mt-1">The more specific you are, the more specific your audit.</p>
-                  </div>
-                  <Button type="submit" disabled={loading} className="w-full btn-glow bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white font-bold py-6 rounded-full text-base">
-                    {loading ? 'Sending...' : 'Send me my free audit'}
-                  </Button>
-                  <p className="text-xs text-muted-foreground text-center">
-                    One reply from one human, within one business day. No sales sequence, no spam.
-                  </p>
-                </form>
-              </>
+              </form>
             )}
           </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+
+          <aside className="space-y-5">
+            <div className="flex gap-4 rounded-2xl bg-mist border border-slate-200 p-5">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white">
+                <Lock size={22} className="text-navy" aria-hidden="true" />
+              </span>
+              <div>
+                <h3 className="font-bold text-navy">Your Information is Safe</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  We keep your information strictly confidential and will never share it with third parties.
+                </p>
+              </div>
+            </div>
+            <img
+              src="/images/site/audit-report.webp"
+              alt="Printed SellHive Amazon Audit Report listing clear insights, actionable recommendations and growth opportunities"
+              loading="lazy"
+              className="w-full rounded-2xl object-cover"
+            />
+          </aside>
+        </Container>
+      </section>
+    </SiteLayout>
   );
 }

@@ -1,226 +1,228 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import CTABand from '@/components/sections/CTABand';
+import {
+  BarChart3, Settings, FileText, Search, Image as ImageIcon, CheckCircle2, ShieldCheck, MessageCircle,
+  TrendingUp, ShoppingCart, Rocket, ArrowRight, BadgeCheck,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/Button';
-import { Search, Settings, TrendingUp, Users, CheckCircle2 } from 'lucide-react';
+import SiteLayout from '@/components/site/SiteLayout';
+import { Container, SectionHeading, YellowButton, OutlineButton, PageHero, CtaBand, Hl } from '@/components/site/ui';
+import useSeo from '@/hooks/useSeo';
+
+const SERVICES = [
+  {
+    icon: BarChart3, accent: '#155EEF', tint: 'bg-[#F2F6FE]',
+    title: 'Amazon PPC Management', desc: 'Turn ad spend into profitable sales.',
+    items: ['Sponsored Products', 'Sponsored Brands', 'Sponsored Display', 'Keyword Research', 'Product Targeting', 'Search-Term Harvesting', 'Bid & Budget Optimization', 'Campaign Restructuring'],
+  },
+  {
+    icon: Settings, accent: '#16A34A', tint: 'bg-[#F1FAF4]',
+    title: 'Account Management', desc: 'Keep your entire account moving in the right direction.',
+    items: ['Performance Monitoring', 'TACOS Management', 'ASIN-Level Analysis', 'Competitor Analysis', 'Account Health Monitoring', 'Inventory Coordination', 'Strategy & Reporting'],
+  },
+  {
+    icon: FileText, accent: '#F15A24', tint: 'bg-[#FFF5F0]',
+    title: 'Listing & Conversion Optimization', desc: 'Get more customers from the traffic you’re already paying for.',
+    items: ['Keyword Research', 'Title & Bullet Optimization', 'Backend Search Terms', 'A+ Content Strategy', 'Image Optimization', 'Conversion Analysis', 'Competitor Analysis'],
+  },
+  {
+    icon: Search, accent: '#7C3AED', tint: 'bg-[#F6F2FE]',
+    title: 'Product Research & Sourcing', desc: 'Find products with real market potential.',
+    items: ['Market Research', 'Keyword Demand Analysis', 'Competitor Analysis', 'Pricing & Profitability', 'Supplier Research', 'MOQ & Cost Analysis', 'Landed Cost Evaluation'],
+  },
+  {
+    icon: ImageIcon, accent: '#E11D48', tint: 'bg-[#FFF2F4]',
+    title: 'Creative & Brand Optimization', desc: 'Make your product easier to click, understand, and buy.',
+    items: ['Main Image Strategy', 'Infographic Images', 'A+ Content Design', 'Brand Store Strategy', 'CTR-Focused Creative', 'Competitor Creative Analysis', 'Customer Journey'],
+  },
+];
+
+const OUTCOMES = [
+  { icon: BarChart3, color: '#155EEF', tint: 'bg-[#F2F6FE]', title: 'Lower Your ACOS', text: 'Stop paying for traffic that doesn’t convert.' },
+  { icon: TrendingUp, color: '#16A34A', tint: 'bg-[#F1FAF4]', title: 'Scale Profitable Campaigns', text: 'Increase investment where the numbers support growth.' },
+  { icon: ShoppingCart, color: '#F15A24', tint: 'bg-[#FFF5F0]', title: 'Improve Conversion', text: 'Turn more of your existing traffic into customers.' },
+];
+
+const TIERS = [
+  {
+    tier: 'Tier 1', title: 'Essentials', desc: 'For focused catalogs that need advertising run properly.',
+    color: '#155EEF', border: 'border-[#C9D8F5]', btn: 'bg-navy-deep hover:bg-navy text-white',
+    items: ['Full PPC management (SP/SB/SD)', 'Search-term harvesting & negatives', 'Placement & bid optimization', 'Weekly + monthly reporting', 'Monthly strategy call'],
+  },
+  {
+    tier: 'Tier 2', title: 'Growth', desc: 'For growing catalogs ready to scale on math.', popular: true,
+    color: '#F15A24', border: 'border-[#F15A24]', btn: 'bg-[#F15A24] hover:bg-[#D94A18] text-white',
+    items: ['Everything in Essentials', 'Listing & A+ content optimization', 'Keyword isolation & rank tracking', 'TACOS-based scaling & projections', 'Bi-weekly strategy calls'],
+  },
+  {
+    tier: 'Tier 3', title: 'Full Account', desc: 'For larger catalogs that want the whole account handled.',
+    color: '#16A34A', border: 'border-[#BFE5CC]', btn: 'bg-navy-deep hover:bg-navy text-white',
+    items: ['Everything in Growth', 'Catalog & account health management', 'Creative direction & storefront', 'Inventory & marketplace expansion', 'Weekly strategy calls'],
+  },
+];
+
+const PROCESS = [
+  { icon: Search, color: 'bg-brandblue', title: 'Analyze', text: 'We review your account data and find what’s holding you back.' },
+  { icon: Settings, color: 'bg-[#F15A24]', title: 'Fix', text: 'We eliminate wasted spend and improve your campaign structure.' },
+  { icon: BarChart3, color: 'bg-[#16A34A]', title: 'Optimize', text: 'We optimize ads, listings and account settings based on real data.' },
+  { icon: Rocket, color: 'bg-[#7C3AED]', title: 'Scale', text: 'We increase investment in what works and help you grow profitably.' },
+];
 
 export default function ServicesPage() {
+  useSeo({
+    title: 'Amazon Management Services',
+    description:
+      'Amazon PPC management, account management, listing optimization, product research and creative — managed around one goal: profitable growth.',
+    image: '/images/site/services-hero.webp',
+  });
+
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        {/* Page Hero */}
-        <section className="pt-28 pb-16 bg-gradient-to-br from-[hsl(30,20%,98%)] via-white to-[hsl(260,60%,97%)]">
-<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl font-extrabold mb-5 tracking-tight max-w-3xl mx-auto">
-              Everything your Amazon account needs, run to profit
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Four service pillars, three ways to structure the fee, and no contract. Every engagement starts with a free audit.
-            </p>
-            <Link to="/audit">
-              <Button className="btn-glow btn-pulse bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white font-bold px-8 py-6 text-base rounded-full">
-                Show me what my account is leaking
-              </Button>
-            </Link>
-          </div>
-        </section>
+    <SiteLayout>
+      <PageHero
+        eyebrow="Services"
+        title={<>Amazon Management Built Around <Hl>Profit.</Hl></>}
+        body="We manage your Amazon advertising, account, listings, and growth with one goal: profitable growth."
+        image="/images/site/services-hero.webp"
+        imageAlt="Laptop showing an Amazon sales chart next to an Amazon shipping box"
+        actions={
+          <>
+            <YellowButton to="/audit">Get a Free Account Audit</YellowButton>
+            <OutlineButton to="/contact" dark icon={MessageCircle}>Talk to Us</OutlineButton>
+          </>
+        }
+        trust={[
+          { icon: ShieldCheck, label: 'Founder-Led' },
+          { icon: FileText, label: 'No Contract' },
+          { icon: BarChart3, label: 'Real Account Data' },
+        ]}
+      />
 
-        {/* Pillar 1 */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Pillar 1</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-4">Manage — advertising, run properly</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
-              Day-to-day management of your full advertising account, reported in the metrics that decide whether you actually made money.
-            </p>
-<div className="grid md:grid-cols-2 gap-6">
-              {[
-                'Sponsored Products, Brands, Video & Display',
-                'Search-term harvesting on a three-pass review cycle',
-                'Negative targeting to stop spend on non-converting terms',
-                'Placement and bid optimization',
-                'Campaign restructuring into single-product campaigns',
-                'Day-parting around hours that produce orders',
-                'Weekly and monthly reporting: Sales, ACOS, TACOS, GP & NP',
-                'Proactive alerts — you hear about problems from us first',
-              ].map((item, i) => (
-                <div key={i} className="card-orbit">
-                  <div className="card-orbit-inner">
-                    <div className="flex items-start gap-3">
-                      <CheckCircle2 size={18} className="text-[hsl(16,80%,52%)] mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{item}</span>
-                    </div>
-                  </div>
+      {/* What we do */}
+      <section className="py-16 bg-white">
+        <Container>
+          <SectionHeading
+            eyebrow="Our services"
+            title="What We Do"
+            subtitle="End-to-end Amazon management to help you spend smarter, convert better, and grow profitably."
+          />
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {SERVICES.map(({ icon: Icon, accent, tint, title, desc, items }) => (
+              <article key={title} className={`rounded-2xl border border-slate-200 ${tint} p-5`}>
+                <div className="flex items-start gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white" style={{ background: accent }}>
+                    <Icon size={22} aria-hidden="true" />
+                  </span>
+                  <h3 className="font-bold leading-snug" style={{ color: accent }}>{title}</h3>
                 </div>
-              ))}
-            </div>
+                <p className="mt-4 text-[15px] text-slate-700 leading-snug">{desc}</p>
+                <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                  {items.map((it) => (
+                    <li key={it} className="flex gap-2">
+                      <CheckCircle2 size={16} className="mt-0.5 shrink-0" style={{ color: accent }} aria-hidden="true" />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
-        </section>
+        </Container>
+      </section>
 
-        {/* Pillar 2 */}
-        <section className="py-16 bg-[hsl(30,20%,97%)] border-y border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Pillar 2</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-4">Audit — the diagnosis everything is built on</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
-              Our audit isn't a generic PDF. It's a teardown of your account with a dollar figure attached to every finding.
-            </p>
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                { icon: Search, title: 'ASIN Grades', desc: 'Every product sorted A/B/C/Cut with its share of total ad spend.' },
-                { icon: TrendingUp, title: 'Wasted Spend in Dollars', desc: 'The recoverable number per month, plus your top three bleeders.' },
-                { icon: Settings, title: 'Your ACOS Ceiling', desc: 'Maximum profitable ranking ACOS, calculated from your own margin.' },
-              ].map((item, i) => (
-                <div key={i} className="bg-white rounded-2xl border border-border p-7 card-hover">
-                  <item.icon size={24} className="text-[hsl(260,60%,55%)] mb-4" />
-                  <h3 className="font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+      {/* Outcomes */}
+      <section className="py-16 bg-mist">
+        <Container>
+          <SectionHeading
+            eyebrow="What this means for your business"
+            title={<>Three Key Outcomes. <Hl className="text-[#F5B400]">One Goal.</Hl></>}
+            subtitle="We focus on what actually drives profit for your Amazon business."
+          />
+          <ul className="mt-10 grid md:grid-cols-3 gap-5">
+            {OUTCOMES.map(({ icon: Icon, color, tint, title, text }) => (
+              <li key={title} className={`flex items-center gap-5 rounded-2xl ${tint} border border-white p-6`}>
+                <Icon size={44} style={{ color }} aria-hidden="true" className="shrink-0" />
+                <div>
+                  <h3 className="font-jakarta text-xl font-extrabold" style={{ color }}>{title}</h3>
+                  <p className="mt-1 text-slate-600">{text}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
 
-        {/* Pillar 3 */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Pillar 3</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-4">Scale — growth with a ceiling, not a guess</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
-              Most agencies scale by adding budget. We scale by setting a limit and staying under it.
-            </p>
-            <div className="grid md:grid-cols-2 gap-8 items-start">
-              <div className="bg-white rounded-2xl border border-border p-7">
-                <h3 className="font-bold mb-4 text-sm text-muted-foreground uppercase tracking-wider">How the ceiling is set</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-border"><span className="text-sm">Your TACOS limit</span><span className="font-bold text-[hsl(16,80%,52%)]">18%</span></div>
-                  <div className="flex justify-between py-2 border-b border-border"><span className="text-sm">Current monthly revenue</span><span className="font-bold">$25,467</span></div>
-                  <div className="flex justify-between py-2"><span className="text-sm font-semibold">Monthly spend ceiling</span><span className="font-bold text-[hsl(16,80%,52%)]">$4,584</span></div>
-                </div>
-              </div>
-              <div className="space-y-3">
-                {[
-                  'Recovered waste reinvested into higher-potential targets first',
-                  'Growth projections built off comparable ASINs we reverse-engineer',
-                  'Scenarios modelled — realistic target vs stretch goal',
-                  'Want it faster? We show the margin trade-off in numbers before you decide',
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 size={18} className="text-[hsl(16,80%,52%)] mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Pillar 4 */}
-        <section className="py-16 bg-[hsl(30,20%,97%)] border-y border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Pillar 4</span>
-            <h2 className="text-3xl font-extrabold mt-2 mb-4">Grow & Retain — the part most agencies skip</h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-3xl">
-              Signed isn't safe. Retention comes from you seeing the work, not hearing about it.
-            </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: Users, title: 'Proactive Comms', desc: 'Issues reach you with proof, impact and a revised plan attached.' },
-                { icon: Settings, title: 'Meeting Rhythm', desc: 'Strategy call every 1-2 weeks, with every agreement documented.' },
-                { icon: TrendingUp, title: 'Listing & Creative', desc: 'A+ content, images and copy — no bid fixes a 4% conversion listing.' },
-                { icon: Search, title: 'Expansion', desc: 'New SKUs, new ad types, new marketplaces once the core is healthy.' },
-              ].map((item, i) => (
-                <div key={i} className="bg-white rounded-2xl border border-border p-6 card-hover">
-                  <item.icon size={22} className="text-[hsl(260,60%,55%)] mb-3" />
-                  <h3 className="font-bold text-sm mb-2">{item.title}</h3>
-                  <p className="text-xs text-muted-foreground">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Engagement Tiers */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="text-[hsl(16,80%,52%)] font-bold text-sm uppercase tracking-wider">Engagement Tiers</span>
-              <h2 className="text-3xl font-extrabold mt-2 mb-4">Three levels of support</h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">
-                Your exact scope and fee are set by what the audit finds — so you'll never be quoted before we've looked.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  flag: 'Tier 1',
-                  name: 'Essentials',
-                  who: 'For focused catalogs that need advertising run properly',
-                  features: ['Full PPC management (SP/SB/SD)', 'Search-term harvesting & negatives', 'Placement & bid optimization', 'Weekly + monthly reporting', 'Monthly strategy call'],
-                  featured: false,
-                },
-                {
-                  flag: 'Tier 2 · Most Popular',
-                  name: 'Growth',
-                  who: 'For growing catalogs ready to scale on math',
-                  features: ['Everything in Essentials', 'Listing & A+ content optimization', 'Keyword isolation & rank tracking', 'TACOS-based scaling & projections', 'Bi-weekly strategy calls'],
-                  featured: true,
-                },
-                {
-                  flag: 'Tier 3',
-                  name: 'Full Account',
-                  who: 'For larger catalogs that want the whole account handled',
-                  features: ['Everything in Growth', 'Catalog & account health management', 'Creative direction & storefront', 'Inventory & marketplace expansion', 'Weekly strategy calls'],
-                  featured: false,
-                },
-              ].map((tier, i) => (
-                <div
-                  key={i}
-                  className={`rounded-2xl border p-7 flex flex-col ${
-                    tier.featured
-                      ? 'border-[hsl(16,80%,52%)] bg-[hsl(16,90%,97%)] shadow-lg relative'
-                      : 'border-border bg-white'
-                  }`}
+      {/* Tiers */}
+      <section className="py-16 bg-white">
+        <Container>
+          <SectionHeading
+            eyebrow="Engagement tiers"
+            title="Three Levels of Support"
+            subtitle="Your exact scope and fee are set by what the audit finds — so you’ll never be quoted before we’ve looked."
+          />
+          <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {TIERS.map((t) => (
+              <article key={t.title} className={`relative flex flex-col rounded-2xl border-2 ${t.border} bg-white p-7 ${t.popular ? 'shadow-[0_20px_50px_-24px_rgba(241,90,36,0.45)]' : ''}`}>
+                {t.popular && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#F15A24] px-3 py-1 text-xs font-bold text-white">
+                    Most Popular
+                  </span>
+                )}
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{t.tier}</p>
+                <h3 className="mt-1 font-jakarta text-2xl font-extrabold text-navy">{t.title}</h3>
+                <p className="mt-2 text-slate-600">{t.desc}</p>
+                <ul className="mt-5 space-y-2.5 text-[15px] text-slate-700 flex-1">
+                  {t.items.map((it) => (
+                    <li key={it} className="flex gap-2">
+                      <CheckCircle2 size={18} className="mt-0.5 shrink-0" style={{ color: t.color }} aria-hidden="true" />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/audit"
+                  className={`mt-7 inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-hive ${t.btn}`}
                 >
-                  {tier.featured && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[hsl(16,80%,52%)] text-white text-xs font-bold rounded-full">
-                      Most Popular
-                    </div>
-                  )}
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{tier.flag}</span>
-                  <h3 className="text-2xl font-extrabold mt-2 mb-2">{tier.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-5">{tier.who}</p>
-                  <ul className="space-y-3 flex-1">
-                    {tier.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 size={15} className="text-[hsl(16,80%,52%)] mt-0.5 flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to="/audit" className="mt-6">
-                    <Button
-                      className={`w-full rounded-full font-semibold ${
-                        tier.featured
-                          ? 'btn-glow bg-[hsl(16,80%,52%)] hover:bg-[hsl(16,80%,45%)] text-white'
-                          : 'bg-foreground hover:bg-foreground/90 text-white'
-                      }`}
-                    >
-                      Get scoped in your audit
-                    </Button>
-                  </Link>
-                </div>
-              ))}
-            </div>
+                  Get scoped in your audit <ArrowRight size={16} aria-hidden="true" />
+                  <span className="sr-only"> for the {t.title} tier</span>
+                </Link>
+              </article>
+            ))}
           </div>
-        </section>
+        </Container>
+      </section>
 
-        <CTABand />
-      </main>
-      <Footer />
-    </div>
+      {/* Process */}
+      <section className="py-16 bg-mist">
+        <Container>
+          <SectionHeading eyebrow="How it works" title="A Simple Process. Real Results." />
+          <ol className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {PROCESS.map(({ icon: Icon, color, title, text }, i) => (
+              <li key={title} className="relative flex gap-4">
+                <span className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full ${color} text-white`}>
+                  <Icon size={28} aria-hidden="true" />
+                </span>
+                <div>
+                  <h3 className="font-bold text-lg text-navy">{i + 1}. {title}</h3>
+                  <p className="mt-1 text-[15px] text-slate-600 leading-relaxed">{text}</p>
+                </div>
+                {i < PROCESS.length - 1 && (
+                  <ArrowRight size={20} aria-hidden="true" className="hidden lg:block absolute top-6 -right-6 text-brandblue" />
+                )}
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      <CtaBand
+        title={<>Ready to Find Where <Hl>Your Profit Is Leaking?</Hl></>}
+        body="We’ll show you what’s costing your account money — using your own data."
+        primary={<YellowButton to="/audit">Get a Free Account Audit</YellowButton>}
+        secondary={<OutlineButton to="/contact" dark icon={MessageCircle}>Talk to Us</OutlineButton>}
+        trust={[
+          { icon: ShieldCheck, label: 'Free Audit' },
+          { icon: FileText, label: 'No Contract' },
+          { icon: BadgeCheck, label: 'Real Numbers' },
+        ]}
+      />
+    </SiteLayout>
   );
 }

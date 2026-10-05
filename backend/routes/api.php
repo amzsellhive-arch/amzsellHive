@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ResultCardController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\BlogPostController;
+use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Auth\AdminAuthController;
 
 /*
@@ -22,6 +24,13 @@ Route::post('/audit-requests', [AuditController::class, 'store']);
 Route::get('/pages/{slug}', [CmsController::class, 'show']);
 Route::get('/result-cards', [ResultCardController::class, 'index']);
 Route::get('/testimonials', [TestimonialController::class, 'index']);
+
+// Blog (public)
+Route::get('/blog', [BlogPostController::class, 'index']);
+Route::get('/blog/{slug}', [BlogPostController::class, 'show']);
+
+// Uploaded media (blog covers, brand logos)
+Route::get('/media/{path}', [MediaController::class, 'show'])->where('path', '.*');
 
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
@@ -54,4 +63,12 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('/testimonials', [TestimonialController::class, 'store']);
     Route::put('/testimonials/{testimonial}', [TestimonialController::class, 'update']);
     Route::delete('/testimonials/{testimonial}', [TestimonialController::class, 'destroy']);
+
+    Route::get('/blog', [BlogPostController::class, 'adminIndex']);
+    Route::post('/blog', [BlogPostController::class, 'store']);
+    Route::get('/blog/{blogPost}', [BlogPostController::class, 'adminShow']);
+    Route::put('/blog/{blogPost}', [BlogPostController::class, 'update']);
+    Route::delete('/blog/{blogPost}', [BlogPostController::class, 'destroy']);
+
+    Route::post('/media', [MediaController::class, 'store']);
 });

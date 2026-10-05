@@ -9,6 +9,20 @@ import Sitemap from 'vite-plugin-sitemap';
 import { getBlogRoutes } from './prerender/blog-routes.js';
 import { getSitemapLastmod } from './prerender/blog-sitemap.js';
 
+// Public routes for sitemap.xml (blog posts are dynamic and served by the API)
+const CASE_STUDY_SLUGS = [
+  'amazon-brand-store-performance',
+  'beauty-brand-ppc-optimization',
+  'amazon-ppc-sales-growth',
+  'uk-brand-ppc-growth',
+  'q4-sales-momentum',
+  'amazon-account-growth',
+];
+const SITEMAP_ROUTES = [
+  '/services', '/results', '/about', '/contact', '/audit', '/blog', '/privacy-policy', '/terms',
+  ...CASE_STUDY_SLUGS.map((s) => `/results/${s}`),
+];
+
 function escapeHtmlAttr(str) {
   return str
     .replace(/&/g, '&amp;')
@@ -18,8 +32,8 @@ function escapeHtmlAttr(str) {
     .replace(/'/g, '&#39;');
 }
 
-process.env.VITE_APP_TITLE ??= process.env.OVERVIEW_TITLE ?? 'shadcnui';
-process.env.VITE_APP_DESCRIPTION ??= process.env.OVERVIEW_DESCRIPTION ?? 'Atoms Generated Project';
+process.env.VITE_APP_TITLE ??= process.env.OVERVIEW_TITLE ?? 'SellHive';
+process.env.VITE_APP_DESCRIPTION ??= process.env.OVERVIEW_DESCRIPTION ?? 'Founder-led Amazon management for private-label brands.';
 process.env.VITE_APP_TITLE = escapeHtmlAttr(process.env.VITE_APP_TITLE);
 process.env.VITE_APP_DESCRIPTION = escapeHtmlAttr(process.env.VITE_APP_DESCRIPTION);
 process.env.VITE_APP_LOGO_URL ??= process.env.OVERVIEW_LOGO_URL ?? 'https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico';
@@ -51,9 +65,12 @@ export default defineConfig(({ command }) => {
       atoms(),
       ensureBuildOutDir(),
       Sitemap({
-        hostname: 'https://atoms.template.com',
+        hostname: 'https://sellhive.net',
+        dynamicRoutes: SITEMAP_ROUTES,
+        exclude: ['/admin', '/admin/login'],
         lastmod: getSitemapLastmod(),
-        readable: true,
+        readable: false,
+        robots: [{ userAgent: '*', allow: '/', disallow: ['/admin'] }],
         generateRobotsTxt: true,
       }),
       ...(blogPrerenderRoutes.length > 0
