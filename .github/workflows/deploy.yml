@@ -30,4 +30,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 65002
           local_path: ./frontend/dist/*
-          remote_path: /home/u532911591/domains/amzsellhive.com/public_html
+          remote_path: /home/u532911591/domains/sellhive.net/public_html
