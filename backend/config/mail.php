@@ -59,7 +59,8 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
-    'admin_address' => env('MAIL_ADMIN_ADDRESS', 'info@sellhive.net'),
+    // One or more comma-separated addresses, e.g. "info@sellhive.net,owner@gmail.com"
+    'admin_address' => array_values(array_filter(array_map('trim', explode(',', (string) env('MAIL_ADMIN_ADDRESS', 'info@sellhive.net'))))),
 
     'markdown' => [
         'theme' => 'default',
