@@ -17,7 +17,7 @@ export default function BlogPage() {
   const [search, setSearch] = useState(q);
 
   useSeo({
-    title: 'Resources — Amazon Growth Insights',
+    title: 'Blog — Amazon Growth Insights',
     description:
       'Practical guides on Amazon PPC, ACOS, listings, Brand Stores and account growth from the SellHive team.',
   });
@@ -64,7 +64,7 @@ export default function BlogPage() {
     <SiteLayout>
       <section className="bg-navy-deep text-white">
         <Container className="py-14 sm:py-16">
-          <Eyebrow tone="yellow" className="mb-3">Resources</Eyebrow>
+          <Eyebrow tone="yellow" className="mb-3">SellHive Blog</Eyebrow>
           <h1 className="font-jakarta text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.08] max-w-3xl">
             Amazon Growth <Hl>Insights.</Hl>
           </h1>

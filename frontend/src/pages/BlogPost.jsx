@@ -38,7 +38,7 @@ export default function BlogPostPage() {
           description: post.meta_description || post.excerpt,
           image: post.cover_image || undefined,
         }
-      : { title: 'Resources' }
+      : { title: 'Blog' }
   );
 
   if (state.notFound) return <NotFound />;
@@ -68,7 +68,7 @@ export default function BlogPostPage() {
         <Container className="py-24 text-center">
           <h1 className="font-jakarta text-2xl font-extrabold text-navy">This article couldn’t be loaded.</h1>
           <p className="mt-2 text-slate-600">Check your connection and refresh the page.</p>
-          <Link to="/blog" className="mt-6 inline-block font-bold text-brandblue hover:underline">Back to Resources</Link>
+          <Link to="/blog" className="mt-6 inline-block font-bold text-brandblue hover:underline">Back to Blog</Link>
         </Container>
       ) : (
         <article>
@@ -78,7 +78,7 @@ export default function BlogPostPage() {
                 <ol className="flex items-center gap-1.5 flex-wrap">
                   <li><Link to="/" aria-label="Home" className="flex"><Home size={15} /></Link></li>
                   <ChevronRight size={14} className="text-slate-400" aria-hidden="true" />
-                  <li><Link to="/blog" className="hover:underline">Resources</Link></li>
+                  <li><Link to="/blog" className="hover:underline">Blog</Link></li>
                   {post.category && (
                     <>
                       <ChevronRight size={14} className="text-slate-400" aria-hidden="true" />

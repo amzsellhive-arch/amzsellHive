@@ -9,7 +9,7 @@ export const NAV_LINKS = [
   { href: '/services', label: 'Services' },
   { href: '/results', label: 'Results' },
   { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Resources' },
+  { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ];
 

@@ -18,6 +18,7 @@ import BlogPosts from './admin/BlogPosts';
 import BlogEditor from './admin/BlogEditor';
 import SiteSettings from './admin/SiteSettings';
 import AdminDashboard from './admin/AdminDashboard';
+import AdminLayout from './admin/AdminLayout';
 import AdminLogin from './admin/AdminLogin';
 import LeadsTable from './admin/LeadsTable';
 import AuditRequests from './admin/AuditRequests';
@@ -50,82 +51,21 @@ const AppRoutes = () => (
       path="/admin"
       element={
         <RequireAdmin>
-          <AdminDashboard />
+          <AdminLayout />
         </RequireAdmin>
       }
-    />
-    <Route
-      path="/admin/leads"
-      element={
-        <RequireAdmin>
-          <LeadsTable />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/audits"
-      element={
-        <RequireAdmin>
-          <AuditRequests />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/cms"
-      element={
-        <RequireAdmin>
-          <CmsEditor />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/result-cards"
-      element={
-        <RequireAdmin>
-          <ResultCards />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/testimonials"
-      element={
-        <RequireAdmin>
-          <Testimonials />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/blog"
-      element={
-        <RequireAdmin>
-          <BlogPosts />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/blog/new"
-      element={
-        <RequireAdmin>
-          <BlogEditor />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/blog/:id"
-      element={
-        <RequireAdmin>
-          <BlogEditor />
-        </RequireAdmin>
-      }
-    />
-    <Route
-      path="/admin/settings"
-      element={
-        <RequireAdmin>
-          <SiteSettings />
-        </RequireAdmin>
-      }
-    />
+    >
+      <Route index element={<AdminDashboard />} />
+      <Route path="leads" element={<LeadsTable />} />
+      <Route path="audits" element={<AuditRequests />} />
+      <Route path="cms" element={<CmsEditor />} />
+      <Route path="result-cards" element={<ResultCards />} />
+      <Route path="testimonials" element={<Testimonials />} />
+      <Route path="blog" element={<BlogPosts />} />
+      <Route path="blog/new" element={<BlogEditor />} />
+      <Route path="blog/:id" element={<BlogEditor />} />
+      <Route path="settings" element={<SiteSettings />} />
+    </Route>
     <Route path="/auth/callback" element={<AuthCallback />} />
     <Route path="/auth/error" element={<AuthError />} />
     <Route path="*" element={<NotFound />} />

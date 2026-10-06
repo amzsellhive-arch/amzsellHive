@@ -17,7 +17,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Results detail pages keep "Results" active; blog posts keep "Resources" active.
+  // Results detail pages keep "Results" active; blog posts keep "Blog" active.
   const isActive = (href) =>
     href === '/' ? location.pathname === '/' : location.pathname.startsWith(href);
 

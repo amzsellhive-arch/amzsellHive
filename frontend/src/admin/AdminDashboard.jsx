@@ -109,7 +109,7 @@ action: (
     { to: '/admin/cms', label: 'CMS Editor', desc: 'Edit page content', icon: LayoutDashboard },
     { to: '/admin/result-cards', label: 'Result Cards', desc: 'Manage proven results', icon: TrendingUp },
     { to: '/admin/testimonials', label: 'Testimonials', desc: 'Manage client feedback', icon: MessagesSquare },
-    { to: '/admin/blog', label: 'Blog Posts', desc: 'Write & publish Resources articles', icon: Newspaper },
+    { to: '/admin/blog', label: 'Blog Posts', desc: 'Write & publish blog articles', icon: Newspaper },
     { to: '/admin/settings', label: 'Site Settings', desc: 'Contact info, social links & brand logos', icon: Settings },
   ];
 
