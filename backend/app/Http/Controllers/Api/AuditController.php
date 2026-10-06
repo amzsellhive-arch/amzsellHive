@@ -29,7 +29,10 @@ class AuditController extends Controller
                 'name' => $audit->name,
                 'email' => $audit->email,
                 'brand' => $audit->brand,
-                'message' => 'Audit request: ' . $audit->problem,
+                'message' => trim(
+                    ($audit->marketplace ? 'Main marketplace: ' . $audit->marketplace . "\n\n" : '')
+                    . ($audit->problem ?: 'No additional information provided.')
+                ),
                 'service_interest' => 'Free Account Audit',
             ]);
             $lead->status = 'New';
