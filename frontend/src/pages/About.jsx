@@ -2,11 +2,7 @@ import { CalendarDays, BarChart3, Users, Globe, ShieldCheck, FileText, Lock, Box
 import SiteLayout from '@/components/site/SiteLayout';
 import { Container, Eyebrow, YellowButton, PageHero, Hl } from '@/components/site/ui';
 import useSeo from '@/hooks/useSeo';
-
-const FOUNDERS = [
-  { name: 'Ishfaq Ahmad', role: 'Co-Founder', img: '/images/team/ishfaq-ahmad.webp' },
-  { name: 'Noman Arshad', role: 'Co-Founder', img: '/images/team/noman-arshad.webp' },
-];
+import FounderCards from '@/components/site/FounderCards';
 
 const EXPERIENCE = [
   { icon: CalendarDays, value: '5+ Years', label: 'Amazon Experience' },
@@ -26,7 +22,7 @@ export default function AboutPage() {
   useSeo({
     title: 'About SellHive',
     description:
-      'SellHive was founded by two Amazon operators. A team of 15 Amazon specialists helping brands scale profitably across 7 marketplaces.',
+      'SellHive was founded by Ishfaq Ahmad with co-founder Noman Arshad. A team of 15 Amazon specialists helping brands scale profitably across 7 marketplaces.',
     image: '/images/site/about-team.webp',
   });
 
@@ -55,23 +51,10 @@ export default function AboutPage() {
               From Hands-On Experience to a Growth Partner for Brands.
             </h2>
             <p className="mt-5 text-lg text-slate-600 leading-relaxed">
-              SellHive was founded by two Amazon operators who have worked with multiple brands across global marketplaces. We’ve seen the challenges that come with growing on Amazon, so we built SellHive to provide clear strategy, hands-on execution, and practical, results-focused support.
+              SellHive was founded by Ishfaq Ahmad and co-founded by Noman Arshad — two Amazon operators who have worked with multiple brands across global marketplaces. We’ve seen the challenges that come with growing on Amazon, so we built SellHive to provide clear strategy, hands-on execution, and practical, results-focused support.
             </p>
           </div>
-          <ul className="grid grid-cols-2 gap-5">
-            {FOUNDERS.map((f) => (
-              <li key={f.name} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_-20px_rgba(8,35,63,0.45)]">
-                <div className="flex aspect-square items-center justify-center bg-gradient-to-b from-navy to-navy-deep">
-                  <img src={f.img} alt={`Portrait of ${f.name}, ${f.role} of SellHive`} loading="lazy" className="h-[78%] w-[78%] rounded-full object-cover ring-4 ring-hive/80" />
-                </div>
-                <div className="p-4 sm:p-5">
-                  <h3 className="font-bold text-navy text-lg">{f.name}</h3>
-                  <p className="text-[#E0A800] font-semibold text-sm">{f.role}</p>
-                  <span className="mt-3 block h-0.5 w-8 bg-hive" aria-hidden="true" />
-                </div>
-              </li>
-            ))}
-          </ul>
+          <FounderCards />
         </Container>
       </section>
 

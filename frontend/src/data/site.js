@@ -52,3 +52,20 @@ export const DEFAULT_BRANDS = [
   { name: 'BoricFem', logo: '' },
   { name: 'Avocado ASU', logo: '' },
 ];
+
+// Founders — shown on About and Home. Descriptions from the approved About mockup.
+export const FOUNDERS = [
+  {
+    name: 'Ishfaq Ahmad',
+    role: 'Founder',
+    img: '/images/team/ishfaq-ahmad.webp',
+    bio: 'Leads strategy, client growth, and overall business direction at SellHive.',
+    linkedin: 'https://www.linkedin.com/in/ishfaq-ahmad-71076417b/',
+  },
+  {
+    name: 'Noman Arshad',
+    role: 'Co-Founder',
+    img: '/images/team/noman-arshad.webp',
+    bio: 'Leads PPC, operations, and account management to drive measurable results for our clients.',
+  },
+];

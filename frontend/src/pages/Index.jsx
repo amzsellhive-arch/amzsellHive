@@ -7,6 +7,7 @@ import { Container, SectionHeading, YellowButton, OutlineButton, TrustRow, CtaBa
 import LogoCarousel from '@/components/site/LogoCarousel';
 import CaseStudyCard from '@/components/site/CaseStudyCard';
 import Faq from '@/components/site/Faq';
+import FounderCards from '@/components/site/FounderCards';
 import { BrandIcon } from '@/components/site/BrandIcons';
 import { featuredCaseStudies } from '@/data/caseStudies';
 import useSiteSettings from '@/hooks/useSiteSettings';
@@ -296,8 +297,28 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 9. FAQ */}
-      <section className="py-16 bg-white">
+      {/* 9. Founders */}
+      <section className="py-16 bg-white" aria-labelledby="founders-heading">
+        <Container className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-xs sm:text-sm font-bold uppercase tracking-[0.14em] text-[#E0A800] mb-2">Meet the founders</p>
+            <h2 id="founders-heading" className="font-jakarta text-3xl sm:text-4xl font-extrabold text-navy tracking-tight leading-[1.15]">
+              Founder-led. <Hl>Operator-run.</Hl>
+            </h2>
+            <p className="mt-5 text-lg text-slate-600 leading-relaxed">
+              SellHive was founded by Ishfaq Ahmad with co-founder Noman Arshad — two Amazon operators who have worked with multiple brands across global marketplaces. We built SellHive to provide clear strategy, hands-on execution, and practical, results-focused support.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <YellowButton to="/audit">Get a Free Account Audit</YellowButton>
+              <OutlineButton to="/about">More About Us</OutlineButton>
+            </div>
+          </div>
+          <FounderCards />
+        </Container>
+      </section>
+
+      {/* 10. FAQ */}
+      <section className="py-16 bg-white border-t border-slate-100">
         <Container>
           <SectionHeading
             eyebrow="FAQ"
