@@ -93,7 +93,7 @@ export default function HomePage() {
   useSeo({
     title: 'Founder-Led Amazon Management',
     description:
-      'Cut your wasted ad spend and scale profitable campaigns. Founder-led Amazon PPC and account management for private-label brands. Get a free account audit.',
+        'SellHive is a founder-led Amazon growth agency helping brands cut wasted ad spend, improve conversion, and scale profitably through PPC, account management, and data-driven strategy.',
     path: '/',
   });
   const brandIndex = new Map(brands.map((b, i) => [b.name, i]));
